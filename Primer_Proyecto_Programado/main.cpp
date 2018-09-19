@@ -8,9 +8,15 @@
 
 int main(int argc, char *argv[])
 {
+    SimpleList<int> nepe;
+    for(int i = 0; i<52;i++) nepe.insertAtHead(i);
+
+    nepe.print();
+    std::cout<< nepe[4]->dato<< endl;
+    /*
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
 
-    return a.exec();
+    return a.exec();*/
 }
