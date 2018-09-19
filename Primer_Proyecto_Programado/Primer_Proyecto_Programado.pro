@@ -15,6 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    simplenode.h \
+    doblenode.h \
+    stack.h \
+    doblelist.h \
+    dclist.h \
+    simplelist.h \
+    queue.h
 
 FORMS    += mainwindow.ui
