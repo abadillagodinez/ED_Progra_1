@@ -13,10 +13,11 @@ int main(int argc, char *argv[])
 
     nepe.print();
     std::cout<< nepe[4]->dato<< endl;
-    /*
+    nepe.swap(1,2);
+    nepe.print();
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
 
-    return a.exec();*/
+    return a.exec();
 }
