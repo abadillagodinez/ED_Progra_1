@@ -67,7 +67,7 @@ void DobleNode<tData>::setNext(DobleNode* pNext)
 template <typename tData>
 DobleNode<tData>* DobleNode<tData>::getPrev()
 {
-    return next;
+    return prev;
 }
 
 template <typename tData>

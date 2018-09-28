@@ -70,7 +70,6 @@ void DobleList<tData>::insertAtHead(tData dato)
         DobleNode<tData>* ndNode = new DobleNode<tData>(dato);
         ndNode->setNext(head);
         ndNode->setPrev(head->getPrev());
-        head->getPrev()->setNext(ndNode);
         ndNode->getNext()->setPrev(ndNode);
         head = ndNode;
         lSize++;
