@@ -13,7 +13,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    movement.cpp
 
 HEADERS  += mainwindow.h \
     simplenode.h \
@@ -22,6 +23,9 @@ HEADERS  += mainwindow.h \
     doblelist.h \
     dclist.h \
     simplelist.h \
-    queue.h
+    queue.h \
+    movement.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES +=
