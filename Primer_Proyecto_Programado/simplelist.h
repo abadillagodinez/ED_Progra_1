@@ -24,6 +24,7 @@ class SimpleList
         void deleteAtTail();
         void print();
         int getSize();
+
         SimpleNode<tData>* operator [](int pos);
         void swap(int pos, int pos2);
 
@@ -258,7 +259,7 @@ void SimpleList<tData>::swap(int pos, int pos2)\
 {
     SimpleNode<tData>* temp1;
     SimpleNode<tData>* temp2;
-    SimpleNode<tData> temp3 = *temp1;
+    SimpleNode<tData> temp3(0);
     if (pos == pos2) return;
     if(isVoid())
         cout << "La lista se está vacía\n";
