@@ -93,12 +93,15 @@ int MainWindow::partition(SimpleList<T> arr, int low, int high)
     {
         if (arr[j]->dato <= pivot->dato){ //changes acording to which one is higher
           i++;
+          //cout << "Moving" << arr[j]->dato << "," << arr[i]->dato;
           arr.swap(i,j);
-          movements.push_back(movement(i,j));
+          //movements.push_back(movement(i,j));
+          //cout << "Inserted " <<movements[i].getX() << "," << movements[i].getY();
         }
     }
     arr.swap((i+ 1),high);
-    movements.push_back(movement(i,high));
+    movements.push_back(movement(i+1,high));
+    //cout << "Inserted " <<movements[i+1].getX() << "," << movements[i+1].getY();
     return( i + 1 );
 }
 
@@ -111,11 +114,50 @@ void MainWindow::QuickSort(SimpleList<T> arr, int low, int high)
         QuickSort(arr, pi + 1, high);//Makes a new group with the lowers
 
       }
-}
 
+}
+void MainWindow::move()
+{
+    cout << "Movements : [";
+    int z = 0;
+    for(std::size_t i = 0; i< (movements.size()-1); i++)
+    {
+        movement n = movements[i];
+        cout << "(" << n.getX() << ","<< n.getY() << "),";
+        //Swap(n.getX(),n.getY());
+        movementsDone.push_back(n);
+        if (z < 1)
+        {
+            Swap(n.getX(),n.getY());
+            z++;
+        }
+
+    }
+    cout << "]";
+
+}
+template<class T>
+void MainWindow::BubbleSort(SimpleList<T> arr)
+{
+    int i,j,n;
+    n = arr.getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr[j]->getDato() > arr[j+1]->getDato())
+            {
+                arr.swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
 void MainWindow::on_pushButton_2_clicked()
 {
     list.print();
-    QuickSort(list,0,list.getSize()-1);
+    //QuickSort(list,0,list.getSize()-1);
+    BubbleSort(list);
+    move();
     list.print();
 }

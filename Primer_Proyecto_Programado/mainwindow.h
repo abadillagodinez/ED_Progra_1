@@ -30,6 +30,9 @@ public:
     void QuickSort(SimpleList<T> arr, int low, int high);
     template<class T>
     int partition(SimpleList<T> arr, int low, int high);
+    void move();
+    template<class T>
+    void BubbleSort(SimpleList<T> arr);
 
 private slots:
     void on_pushButton_clicked();
@@ -48,6 +51,7 @@ private:
     QGraphicsItemAnimation *animation;
     SimpleList<int> list;
     vector<movement> movements;
+    vector<movement> movementsDone;
 };
 
 #endif // MAINWINDOW_H
