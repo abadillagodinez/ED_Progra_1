@@ -4,6 +4,7 @@
 template <typename tData>
 class SimpleNode
 {
+
     public:
         tData dato;
         SimpleNode* next;

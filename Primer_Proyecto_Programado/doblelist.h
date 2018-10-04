@@ -209,7 +209,8 @@ void DobleList<tData>::print()
     else
     {
         actual = head;
-        do {
+        while(actual)
+        {
             if (!actual->getNext())
             {
                 cout << actual->getDato() << endl;
@@ -220,7 +221,7 @@ void DobleList<tData>::print()
                 cout << actual->getDato() << " - ";
                 actual = actual->getNext();
             }
-        } while(actual);
+        }
     }
 }
 

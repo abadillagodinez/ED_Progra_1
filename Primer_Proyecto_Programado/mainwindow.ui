@@ -37,7 +37,7 @@
      <string>Pausar</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btnRandonInt">
     <property name="geometry">
      <rect>
       <x>110</x>
@@ -50,11 +50,11 @@
      <string>Random 10 int</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="btnQuick">
     <property name="geometry">
      <rect>
-      <x>350</x>
-      <y>70</y>
+      <x>580</x>
+      <y>0</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -70,7 +70,7 @@
      <x>0</x>
      <y>0</y>
      <width>1126</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

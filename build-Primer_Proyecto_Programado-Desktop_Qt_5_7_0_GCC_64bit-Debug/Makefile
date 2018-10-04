@@ -49,9 +49,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Primer_Proyecto_Programado/main.cpp \
-		../Primer_Proyecto_Programado/mainwindow.cpp moc_mainwindow.cpp
+		../Primer_Proyecto_Programado/mainwindow.cpp \
+		../Primer_Proyecto_Programado/movement.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		movement.o \
 		moc_mainwindow.o
 DIST          = ../../../../Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../Qt5.7.0/5.7/gcc_64/mkspecs/common/unix.conf \
@@ -209,8 +211,10 @@ DIST          = ../../../../Qt5.7.0/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../Primer_Proyecto_Programado/doblelist.h \
 		../Primer_Proyecto_Programado/dclist.h \
 		../Primer_Proyecto_Programado/simplelist.h \
-		../Primer_Proyecto_Programado/queue.h ../Primer_Proyecto_Programado/main.cpp \
-		../Primer_Proyecto_Programado/mainwindow.cpp
+		../Primer_Proyecto_Programado/queue.h \
+		../Primer_Proyecto_Programado/movement.h ../Primer_Proyecto_Programado/main.cpp \
+		../Primer_Proyecto_Programado/mainwindow.cpp \
+		../Primer_Proyecto_Programado/movement.cpp
 QMAKE_TARGET  = Primer_Proyecto_Programado
 DESTDIR       = 
 TARGET        = Primer_Proyecto_Programado
@@ -543,8 +547,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Primer_Proyecto_Programado/mainwindow.h ../Primer_Proyecto_Programado/simplenode.h ../Primer_Proyecto_Programado/doblenode.h ../Primer_Proyecto_Programado/stack.h ../Primer_Proyecto_Programado/doblelist.h ../Primer_Proyecto_Programado/dclist.h ../Primer_Proyecto_Programado/simplelist.h ../Primer_Proyecto_Programado/queue.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Primer_Proyecto_Programado/main.cpp ../Primer_Proyecto_Programado/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Primer_Proyecto_Programado/mainwindow.h ../Primer_Proyecto_Programado/simplenode.h ../Primer_Proyecto_Programado/doblenode.h ../Primer_Proyecto_Programado/stack.h ../Primer_Proyecto_Programado/doblelist.h ../Primer_Proyecto_Programado/dclist.h ../Primer_Proyecto_Programado/simplelist.h ../Primer_Proyecto_Programado/queue.h ../Primer_Proyecto_Programado/movement.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Primer_Proyecto_Programado/main.cpp ../Primer_Proyecto_Programado/mainwindow.cpp ../Primer_Proyecto_Programado/movement.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Primer_Proyecto_Programado/mainwindow.ui $(DISTDIR)/
 
 
@@ -674,6 +678,28 @@ moc_mainwindow.cpp: ../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QMainWindow
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		../Primer_Proyecto_Programado/simplelist.h \
+		../Primer_Proyecto_Programado/simplenode.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsScene \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsView \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsview.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qpainter.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qscrollarea.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItem \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItemAnimation \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitemanimation.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/QTimeLine \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qtimeline.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qeasingcurve.h \
+		../Primer_Proyecto_Programado/movement.h \
 		../Primer_Proyecto_Programado/mainwindow.h \
 		../../../../Qt5.7.0/5.7/gcc_64/bin/moc
 	/home/retr0/Qt5.7.0/5.7/gcc_64/bin/moc $(DEFINES) -I/home/retr0/Qt5.7.0/5.7/gcc_64/mkspecs/linux-g++ -I/home/retr0/Escritorio/Datos/ED_Progra_1/Primer_Proyecto_Programado -I/home/retr0/Qt5.7.0/5.7/gcc_64/include -I/home/retr0/Qt5.7.0/5.7/gcc_64/include/QtWidgets -I/home/retr0/Qt5.7.0/5.7/gcc_64/include/QtGui -I/home/retr0/Qt5.7.0/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Primer_Proyecto_Programado/mainwindow.h -o moc_mainwindow.cpp
@@ -798,13 +824,40 @@ main.o: ../Primer_Proyecto_Programado/main.cpp ../Primer_Proyecto_Programado/mai
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		../Primer_Proyecto_Programado/simplelist.h \
+		../Primer_Proyecto_Programado/simplenode.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsScene \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsView \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsview.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qpainter.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qscrollarea.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItem \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItemAnimation \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitemanimation.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/QTimeLine \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qtimeline.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qeasingcurve.h \
+		../Primer_Proyecto_Programado/movement.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QApplication \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qapplication.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qeventloop.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qguiapplication.h \
-		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		../Primer_Proyecto_Programado/doblelist.h \
+		../Primer_Proyecto_Programado/doblenode.h \
+		../Primer_Proyecto_Programado/dclist.h \
+		../Primer_Proyecto_Programado/stack.h \
+		../Primer_Proyecto_Programado/queue.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Primer_Proyecto_Programado/main.cpp
 
 mainwindow.o: ../Primer_Proyecto_Programado/mainwindow.cpp ../Primer_Proyecto_Programado/mainwindow.h \
@@ -908,6 +961,28 @@ mainwindow.o: ../Primer_Proyecto_Programado/mainwindow.cpp ../Primer_Proyecto_Pr
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qicon.h \
+		../Primer_Proyecto_Programado/simplelist.h \
+		../Primer_Proyecto_Programado/simplenode.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QDialog \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qdialog.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsScene \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qpen.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsView \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsview.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qpainter.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtGui/qtextoption.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qscrollarea.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItem \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QGraphicsItemAnimation \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qgraphicsitemanimation.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/QTimeLine \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qtimeline.h \
+		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qeasingcurve.h \
+		../Primer_Proyecto_Programado/movement.h \
 		ui_mainwindow.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/QVariant \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QAction \
@@ -925,8 +1000,6 @@ mainwindow.o: ../Primer_Proyecto_Programado/mainwindow.cpp ../Primer_Proyecto_Pr
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QHeaderView \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qheaderview.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
-		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractscrollarea.h \
-		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qframe.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
@@ -948,6 +1021,9 @@ mainwindow.o: ../Primer_Proyecto_Programado/mainwindow.cpp ../Primer_Proyecto_Pr
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/qtoolbar.h \
 		../../../../Qt5.7.0/5.7/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Primer_Proyecto_Programado/mainwindow.cpp
+
+movement.o: ../Primer_Proyecto_Programado/movement.cpp ../Primer_Proyecto_Programado/movement.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o movement.o ../Primer_Proyecto_Programado/movement.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

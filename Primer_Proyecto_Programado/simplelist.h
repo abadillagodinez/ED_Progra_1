@@ -24,8 +24,10 @@ class SimpleList
         void deleteAtTail();
         void print();
         int getSize();
+        SimpleNode<tData>* getHead();
+        SimpleNode<tData>* getTail();
 
-        SimpleNode<tData>* operator [](int pos);
+        SimpleNode<tData>* getPos(int pos);
         void swap(int pos, int pos2);
 
     protected:
@@ -42,12 +44,33 @@ SimpleList<tData>::SimpleList()
 template <typename tData>
 SimpleList<tData>::~SimpleList()
 {
+    SimpleNode<tData> *aux;
+    while (head)
+    {
+        aux = head;
+        head = head->getNext();
+        lSize--;
+        delete aux;
+    }
+    head = actual = tail = 0;
 }
 
 template <typename tData>
 int SimpleList<tData>::getSize()
 {
     return lSize;
+}
+
+template <typename tData>
+SimpleNode<tData>* SimpleList<tData>::getHead()
+{
+    return head;
+}
+
+template <typename tData>
+SimpleNode<tData>* SimpleList<tData>::getTail()
+{
+    return tail;
 }
 
 template <typename tData>
@@ -226,7 +249,7 @@ void SimpleList<tData>::print()
 }
 
 template <class tData>
-SimpleNode<tData>* SimpleList<tData>::operator [](int pos)
+SimpleNode<tData>* SimpleList<tData>::getPos(int pos)
 {
     if(isVoid())
         cout << "La lista se está vacía\n";
