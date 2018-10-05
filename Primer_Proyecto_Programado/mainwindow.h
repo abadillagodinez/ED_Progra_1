@@ -12,6 +12,11 @@
 #include <vector>
 #include "windows.h"
 #include "movement.h"
+#include <time.h>
+#include <QPropertyAnimation>
+#include <QThread>
+#include <QTime>
+
 namespace Ui {
 class MainWindow;
 }
@@ -30,14 +35,21 @@ public:
     void QuickSort(SimpleList<T> arr, int low, int high);
     template<class T>
     int partition(SimpleList<T> arr, int low, int high);
-    void move();
+    void printmoves();
     template<class T>
     void BubbleSort(SimpleList<T> arr);
+    void move();
 
 private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_radioButton_toggled(bool checked);
+
+    void on_radioButton_2_clicked();
 
 private:
     Ui::MainWindow *ui;

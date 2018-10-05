@@ -1,6 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+void delay(int n)
+{
+    QTime dieTime= QTime::currentTime().addMSecs(n);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -9,13 +16,12 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-
 }
 
 template <typename T>
 void MainWindow::GenerateBoxes(SimpleList<T> list)
 {
-    QBrush redBrush(Qt::white);
+    QBrush redBrush(Qt::red);
     QPen outlinePen(Qt::black);
     outlinePen.setWidth(2);
     int size = list.getSize();
@@ -23,8 +29,6 @@ void MainWindow::GenerateBoxes(SimpleList<T> list)
     {
         std::string str = std::to_string(list[i]->dato);
         QString qstr = QString::fromStdString(str);
-        rectangle = scene->addRect(i*50, 0, 30, 90, outlinePen, redBrush);
-        rectangles.push_back(rectangle);
         text = scene->addText(qstr, QFont("Arial",12));
         text->setPos(QPointF(i*50,-30));
         texts.push_back(text);
@@ -32,42 +36,22 @@ void MainWindow::GenerateBoxes(SimpleList<T> list)
 }
 void MainWindow::Swap(int pos1, int pos2)
 {
-    int dif = (max(pos1,pos2) - min(pos1,pos2))*50;
-    QTimeLine *timer = new QTimeLine(1000);
-    timer->setFrameRange(0,100);
-    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
-    QGraphicsItemAnimation *animation2 = new QGraphicsItemAnimation;
-    QGraphicsItemAnimation *animation3 = new QGraphicsItemAnimation;
-    QGraphicsItemAnimation *animation4 = new QGraphicsItemAnimation;
-    rectangle = rectangles[pos1];
-    rectangle2 = rectangles[pos2];
     text = texts[pos1];
     text2 = texts[pos2];
-    animation->setItem(rectangle);
-    animation->setTimeLine(timer);
-    animation2->setItem(rectangle2);
-    animation2->setTimeLine(timer);
-    animation3->setItem(text);
-    animation3->setTimeLine(timer);
-    animation4->setItem(text2);
-    animation4->setTimeLine(timer);
-    timer->start();
-    for (int i = 0, j = 0; i <= dif; ++i, --j)
-    {
-        animation->setPosAt(i/500.0, QPointF(i,0));
-        animation2->setPosAt(i/500.0, QPointF(j,0));
-    }
-    for (int i = 0; i<=50; ++i)
-    {
-        animation3->setPosAt(i/500.0, QPointF(i*pos2,-30));
-        animation4->setPosAt(i/500.0, QPointF(i*pos1,-30));
-    }
-    QGraphicsRectItem *temp = rectangle;
-    rectangle = rectangle2;
-    rectangle2 = temp;
-    QGraphicsTextItem *temp2 = text;
-    text = text2;
-    text2 = temp2;
+    QPropertyAnimation *animation4 = new QPropertyAnimation(text2, "x", this);
+    QPropertyAnimation *animation3 = new QPropertyAnimation(text,"x",this);
+    animation3->setDuration(500);
+    animation3->setStartValue(50*pos1);
+    animation3->setEndValue(50*pos2);
+    animation3->setEasingCurve(QEasingCurve::Linear);
+    animation4->setDuration(500);
+    animation4->setStartValue(50*pos2);
+    animation4->setEndValue(50*pos1);
+    animation4->setEasingCurve(QEasingCurve::Linear);
+    animation3->start();
+    animation4->start();
+    iter_swap(texts.begin() + pos1, texts.begin() + pos2);
+
 }
 MainWindow::~MainWindow()
 {
@@ -116,24 +100,54 @@ void MainWindow::QuickSort(SimpleList<T> arr, int low, int high)
       }
 
 }
-void MainWindow::move()
+void MainWindow::printmoves()
 {
     cout << "Movements : [";
-    int z = 0;
-    for(std::size_t i = 0; i< (movements.size()-1); i++)
+    for(std::size_t i = 0; i< (movementsDone.size()-1); i++)
     {
-        movement n = movements[i];
+        movement n = movementsDone[i];
         cout << "(" << n.getX() << ","<< n.getY() << "),";
-        //Swap(n.getX(),n.getY());
-        movementsDone.push_back(n);
-        if (z < 1)
-        {
-            Swap(n.getX(),n.getY());
-            z++;
-        }
-
     }
     cout << "]";
+
+}
+void MainWindow::move()
+{
+    int m = 0;
+
+    std::size_t i = 0;
+    vector<movement>::iterator it = movements.begin();
+    if(ui->radioButton_2->isChecked())
+    {
+        if(!movements.empty())
+        {
+            if(ui->checkBox->isChecked())
+                m = 1000;
+            else m = 500;
+            movement n = movements[i];
+            movementsDone.push_back(n);
+            movements.erase(it);
+            Swap(n.getX(),n.getY());
+            delay(m);
+            move();
+        }
+    }
+    if(ui->radioButton_3->isChecked())
+    {
+        if(!movementsDone.empty())
+        {
+            i = movementsDone.size()-1;
+            if(ui->checkBox->isChecked())
+                m = 1000;
+            else m = 500;
+            movement n = movementsDone[i];
+            movements.insert(it,n);
+            movementsDone.pop_back();
+            Swap(n.getX(),n.getY());
+            delay(m);
+            move();
+        }
+    }
 
 }
 template<class T>
@@ -156,8 +170,17 @@ void MainWindow::BubbleSort(SimpleList<T> arr)
 void MainWindow::on_pushButton_2_clicked()
 {
     list.print();
-    //QuickSort(list,0,list.getSize()-1);
-    BubbleSort(list);
+    QuickSort(list,0,list.getSize()-1);
     move();
     list.print();
 }
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    list.print();
+    BubbleSort(list);
+    move();
+    //printmoves();
+    list.print();
+}
+
