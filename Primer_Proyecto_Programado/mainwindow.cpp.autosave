@@ -87,26 +87,6 @@ MainWindow::~MainWindow()
 }
 
 
-
-// SORTINGS ALGORITMS
-
-
-/* INSERTION SORT */
-template <class T>
-void MainWindow::InsertionSort(SimpleList<T>* arr)
-{
-    int i, j;
-    T actual;
-
-    for (i = 1; i < arr->getSize(); i++) {
-        actual = arr->getPos(i)->getDato();
-        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--) {
-            arr->getPos(j)->setDato(arr->getPos(j-1)->getDato());
-        }
-        arr->getPos(j)->setDato(actual);
-    }
-}
-
 void MainWindow::on_btnRandonInt_clicked()
 {
     srand(time(NULL)); //AGREGAR EL RANGO ALEATORIO

@@ -15,6 +15,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <cmath>
+#include <typeinfo>
+
 namespace Ui {
 class MainWindow;
 }
@@ -43,14 +45,22 @@ public:
     template <class T>
     int mayorCantidadDigitos(SimpleList<T> *arr);
 
-    template <class T>
-    int mayorCantidadLetras(SimpleList<T> *arr);
+    int mayorCantidadLetras(SimpleList<string> *arr);
 
     template <class T>
     void radixAux(SimpleList<T>* arr, SimpleList<T>* baldes[] ,int iterations, int tamArreglo);
 
     template <class T>
     void radixVaciarAux(SimpleList<T>* arr, SimpleList<T>* baldes[], int tamArreglo);
+
+    template <class T>
+    void Merge(SimpleList<T> *arr, int leftIndx, int pivote, int rigthIndx);
+
+    template <class T>
+    void MergeSort(SimpleList<T> *arr, int leftIndx, int rightIndx);
+
+    template <class T>
+    void InsertionSort(SimpleList<T> *arr);
 
 
 private slots:

@@ -14,7 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    movement.cpp
+    movement.cpp \
+    radixsort.cpp \
+    quicksort.cpp \
+    mergesort.cpp \
+    insertionsort.cpp
 
 HEADERS  += mainwindow.h \
     simplenode.h \
