@@ -15,10 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     movement.cpp \
-    radixsort.cpp \
-    quicksort.cpp \
-    mergesort.cpp \
-    insertionsort.cpp
 
 HEADERS  += mainwindow.h \
     simplenode.h \
@@ -32,4 +28,5 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-DISTFILES +=
+DISTFILES += \
+    palabras.txt

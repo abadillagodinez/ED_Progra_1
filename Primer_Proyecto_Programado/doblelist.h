@@ -24,6 +24,9 @@ class DobleList
         void deleteAtTail();
         void print();
         int getSize();
+        DobleNode<tData>* getPos(int pos);
+        void swap(int pos1, int pos2);
+
 
 
     protected:
@@ -221,8 +224,65 @@ void DobleList<tData>::print()
                 cout << actual->getDato() << " - ";
                 actual = actual->getNext();
             }
-        }
+        }/*while*/
     }
+}
+
+template <class tData>
+DobleNode<tData>* DobleList<tData>::getPos(int pos)
+{
+    if(isVoid())
+        cout << "La lista se está vacía\n";
+    else
+    {
+        if((pos >= lSize) || (pos < 0))
+            cout << "El índice esta fuera del los límites de la lista\n";
+        else
+        {
+            if(pos == 0)
+                return head;
+            else if(pos == lSize-1)
+                return tail;
+            else
+            {
+                if(pos <= lSize/2) //Si la distancia a la cabeza es menor
+                {
+                    int index = 1;
+                    actual = head;
+                    while (index <= pos) {
+                        actual = actual->getNext();
+                        index++;
+                    }
+                    return actual;
+                }
+                else //si la distancia a la cabeza es mayor
+                {
+                    int index = lSize-2;
+                    actual = tail;
+                    while (index >= pos) {
+                        actual = actual->getPrev();
+                        index--;
+                    }
+                    return actual;
+                }
+            }/*else si la posicion no es un extremo*/
+        }/*else si la posicion es valida*/
+    }/*else de vacio*/
+}
+
+template<class tData>
+void DobleList<tData>::swap(int pos1, int pos2)
+{
+    if((pos1 < lSize || pos1 >= 0) && (pos2 < lSize || pos2 >= 0))
+    {
+        DobleNode<tData> *primero = getPos(pos1);
+        DobleNode<tData> *segundo = getPos(pos2);
+        tData temp = primero->getDato();
+        primero->setDato(segundo->getDato());
+        segundo->setDato(temp);
+    }
+    else
+        cout << "Indices fuera de rango\n";
 }
 
 #endif

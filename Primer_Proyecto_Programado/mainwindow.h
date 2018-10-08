@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include "simplelist.h"
+#include "doblelist.h"
+#include "dclist.h"
+#include "stack.h"
+#include "queue.h"
 #include <QDialog>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -16,6 +20,9 @@
 #include <time.h>
 #include <cmath>
 #include <typeinfo>
+#include <QFile>
+#include <QTextStream>
+#include <fstream>
 
 namespace Ui {
 class MainWindow;
@@ -33,12 +40,14 @@ public:
     void Swap(int pos1, int pos2);
 
     //firma de metodos de ordenamiento
+    /*QUICK*/
     template<class T>
     void QuickSort(SimpleList<T>* arr, int low, int high); //de lista simple
 
     template<class T>
     int partition(SimpleList<T>* arr, int low, int high);
 
+    /*RADIX*/
     template <class T>
     void RadixSort(SimpleList<T>* arr);
 
@@ -53,14 +62,39 @@ public:
     template <class T>
     void radixVaciarAux(SimpleList<T>* arr, SimpleList<T>* baldes[], int tamArreglo);
 
+    /*MERGE*/
     template <class T>
     void Merge(SimpleList<T> *arr, int leftIndx, int pivote, int rigthIndx);
 
     template <class T>
     void MergeSort(SimpleList<T> *arr, int leftIndx, int rightIndx);
 
+    /*INSERTION*/
     template <class T>
     void InsertionSort(SimpleList<T> *arr);
+
+    /*SELECTION*/
+    template <class T>
+    void SelectionSort(SimpleList<T> *arr);
+
+    template <class T>
+    void SelectionAux(SimpleList<T> *arr, int tamanio);
+
+    /*HEAPSORT*/
+    template <class T>
+    void HeapSort(SimpleList<T> *arr);
+
+    template <class T>
+    void HeapSortAux(SimpleList<T> *arr, int largo, int aTratar);
+
+    /* SHELLSORT */
+    template <class T>
+    void ShellSort(SimpleList<T> *arr, int tamano);
+
+
+    void buildWords(SimpleList<string> *arr, int cantidad);
+    string buildWordsAux(int indice);
+
 
 
 private slots:

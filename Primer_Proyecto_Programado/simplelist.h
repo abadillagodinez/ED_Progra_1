@@ -28,7 +28,7 @@ class SimpleList
         SimpleNode<tData>* getTail();
 
         SimpleNode<tData>* getPos(int pos);
-        void swap(int pos, int pos2);
+        void swap(int pos1, int pos2);
 
     protected:
 };
@@ -278,55 +278,18 @@ SimpleNode<tData>* SimpleList<tData>::getPos(int pos)
 }
 
 template<class tData>
-void SimpleList<tData>::swap(int pos, int pos2)\
+void SimpleList<tData>::swap(int pos1, int pos2)
 {
-    SimpleNode<tData>* temp1;
-    SimpleNode<tData>* temp2;
-    SimpleNode<tData> temp3(0);
-    if (pos == pos2) return;
-    if(isVoid())
-        cout << "La lista se está vacía\n";
-    else
+    if((pos1 < lSize || pos1 >= 0) && (pos2 < lSize || pos2 >= 0))
     {
-        if((pos >= lSize) || (pos < 0))
-            cout << "El índice esta fuera del los límites de la lista\n";
-        else
-        {
-            if(pos == 0)
-                temp1 = head;
-            else
-            {
-                int index = 1;
-                actual = head;
-                while (index <= pos) {
-                    actual = actual->getNext();
-                    index++;
-                }
-                temp1 = actual;
-            }
-        }
-        if((pos2 >= lSize) || (pos2 < 0))
-            cout << "El índice esta fuera del los límites de la lista\n";
-        else
-        {
-            if(pos2 == 0)
-                temp2 = head;
-            else
-            {
-                int index = 1;
-                actual = head;
-                while (index <= pos2) {
-                    actual = actual->getNext();
-                    index++;
-                }
-                temp2 = actual;
-            }
-        }
+        SimpleNode<tData> *primero = getPos(pos1);
+        SimpleNode<tData> *segundo = getPos(pos2);
+        tData temp = primero->getDato();
+        primero->setDato(segundo->getDato());
+        segundo->setDato(temp);
     }
-    temp3 = *temp1;
-    temp1->dato = temp2->dato;
-    temp2->dato = temp3.dato;
-
+    else
+        cout << "Indices fuera de rango\n";
 }
 
 #endif
