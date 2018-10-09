@@ -23,6 +23,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <fstream>
+#include <QPropertyAnimation>
+#include <QTime>
 
 namespace Ui {
 class MainWindow;
@@ -87,11 +89,13 @@ public:
     void radixVaciarAux(SimpleList<T>* arr, SimpleList<T>* baldes[], int tamArreglo);
 
     /*MERGE*/
+    void MergeAnimation(int,int,int);
+
     template <class T>
     void Merge(SimpleList<T> *arr, int leftIndx, int pivote, int rigthIndx);
 
     template <class T>
-    void MergeSort(SimpleList<T> *arr, int leftIndx, int rightIndx);
+    void MergeSort(SimpleList<T> *arr, int leftIndx, int rightIndx,int animationIndx);
 
     template <class T>
     void Merge(DobleList<T> *arr, int leftIndx, int pivote, int rigthIndx);
@@ -200,6 +204,39 @@ public:
     void ShellSort(Queue<T> *arr, int tamano);
 
 
+    /* BUBBLESORT */
+    template <class T>
+    void BubbleSort(SimpleList<T> arr);
+
+    template <class T>
+    void BubbleSort(DobleList<T> arr);
+
+    template <class T>
+    void BubbleSort(DCList<T> arr);
+
+    template <class T>
+    void BubbleSort(Stack<T> arr);
+
+    template <class T>
+    void BubbleSort(Queue<T> arr);
+
+    /* BUBBLEDOBLE */
+    template<class T>
+    void DobleBubble(SimpleList<T> &arr, int end);
+
+    template<class T>
+    void DobleBubble(DobleList<T> &arr, int end);
+
+    template<class T>
+    void DobleBubble(DCList<T> &arr, int end);
+
+    template<class T>
+    void DobleBubble(Stack<T> &arr, int end);
+
+    template<class T>
+    void DobleBubble(Queue<T> &arr, int end);
+
+
     void buildWords(SimpleList<string> *arr, int cantidad);
     string buildWordsAux(int indice);
 
@@ -214,12 +251,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    vector<QGraphicsRectItem*> rectangles;
-    QGraphicsRectItem *rectangle;
-    QGraphicsRectItem *rectangle2;
     QGraphicsTextItem *text;
     QGraphicsTextItem *text2;
     vector<QGraphicsTextItem*> texts;
+    vector<QGraphicsLineItem*> lines;
     QGraphicsItemAnimation *animation;
     SimpleList<int> *list = new SimpleList<int>();
     vector<movement> movements;

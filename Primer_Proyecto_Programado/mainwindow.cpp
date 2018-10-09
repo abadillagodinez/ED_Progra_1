@@ -1,6 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+/* FUNCTION FOR DELAYING SORTING GUI */
+void delay(int n = 1000)
+{
+    QTime dieTime= QTime::currentTime().addMSecs(n);
+    while (QTime::currentTime() < dieTime)
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -29,54 +37,38 @@ void MainWindow::GenerateBoxes(SimpleList<T>* list)
     {
         std::string str = std::to_string(list->getPos(i)->getDato());
         QString qstr = QString::fromStdString(str);
-        rectangle = scene->addRect(i*50, 0, 30, 90, outlinePen, redBrush);
-        rectangles.push_back(rectangle);
         text = scene->addText(qstr, QFont("Arial",12));
         text->setPos(QPointF(i*50,-30));
         texts.push_back(text);
+        QGraphicsLineItem *line = scene->addLine(i*50,0,i*50 + 40,0,Qt::SolidLine);
+        line->setPen(QPen(Qt::red));
     }
+
 }
 
 void MainWindow::Swap(int pos1, int pos2)
 {
-    int dif = (max(pos1,pos2) - min(pos1,pos2))*50;
-    QTimeLine *timer = new QTimeLine(1000);
-    timer->setFrameRange(0,100);
-    QGraphicsItemAnimation *animation = new QGraphicsItemAnimation;
-    QGraphicsItemAnimation *animation2 = new QGraphicsItemAnimation;
-    QGraphicsItemAnimation *animation3 = new QGraphicsItemAnimation;
-    QGraphicsItemAnimation *animation4 = new QGraphicsItemAnimation;
-    rectangle = rectangles[pos1];
-    rectangle2 = rectangles[pos2];
     text = texts[pos1];
     text2 = texts[pos2];
-    animation->setItem(rectangle);
-    animation->setTimeLine(timer);
-    animation2->setItem(rectangle2);
-    animation2->setTimeLine(timer);
+    QPropertyAnimation *animation4 = new QPropertyAnimation(text2, "x", this);
+    QPropertyAnimation *animation3 = new QPropertyAnimation(text,"x",this);
+    text->setDefaultTextColor(Qt::red);
+    text2->setDefaultTextColor(Qt::red);
+    animation3->setDuration(500);
+    animation3->setStartValue(50*pos1);
+    animation3->setEndValue(50*pos2);
+    animation3->setEasingCurve(QEasingCurve::Linear);
+    animation4->setDuration(500);
+    animation4->setStartValue(50*pos2);
+    animation4->setEndValue(50*pos1);
+    animation4->setEasingCurve(QEasingCurve::Linear);
+    animation3->start();
+    animation4->start();
+    iter_swap(texts.begin() + pos1, texts.begin() + pos2);
+    delay();
+    text->setDefaultTextColor(Qt::black);
+    text2->setDefaultTextColor(Qt::black);
 
-    animation3->setItem(text);
-    animation3->setTimeLine(timer);
-    animation4->setItem(text2);
-    animation4->setTimeLine(timer);
-    timer->start();
-    for (int i = 0, j = 0; i <= dif; ++i, --j)
-    {
-        animation->setPosAt(i/500.0, QPointF(i,0));
-        animation2->setPosAt(i/500.0, QPointF(j,0));
-    }
-    for (int i = 0; i<=50; ++i)
-    {
-        animation3->setPosAt(i/500.0, QPointF(i*pos2,-30));
-        animation4->setPosAt(i/500.0, QPointF(i*pos1,-30));
-    }
-    QGraphicsRectItem *temp = rectangle;
-    rectangle = rectangle2;
-    rectangle2 = temp;
-    QGraphicsTextItem *temp2 = text;
-    text = text2;
-    text2 = temp2;
-    //timer->stop();
 }
 MainWindow::~MainWindow()
 {
@@ -102,10 +94,8 @@ void MainWindow::on_btnRandonInt_clicked()
 void MainWindow::on_btnQuick_clicked()
 {
     list->print();
-    //QuickSort(list,0,list->getSize()-1);
-    //RadixSort(list);
-    //MergeSort(list, 0, list->getSize()-1);
     ShellSort(list, list->getSize());
+    //Swap(1,2);
     list->print();
 }
 
@@ -127,8 +117,10 @@ void MainWindow::InsertionSort(SimpleList<T>* arr) //Lista simple
             SimpleNode<T> *actualNode = arr->getPos(j);
             SimpleNode<T> *prevNode = arr->getPos(j-1);
             actualNode->setDato(prevNode->getDato());
+            movements.push_back(movement(j+1,j));
         }
         arr->getPos(j)->setDato(actual);
+        movements.push_back(movement(j+1,i));
     }
 }
 
@@ -145,8 +137,10 @@ void MainWindow::InsertionSort(DobleList<T> *arr) //sobrecarga para la lista dob
             DobleNode<T> *actualNode = arr->getPos(j);
             DobleNode<T> *prevNode = arr->getPos(j-1);
             actualNode->setDato(prevNode->getDato());
+            movements.push_back(movement(j+1,j));
         }
         arr->getPos(j)->setDato(actual);
+        movements.push_back(movement(j+1,i));
     }
 }
 
@@ -163,8 +157,10 @@ void MainWindow::InsertionSort(DCList<T> *arr) //sobrecarga para la lista circul
             DobleNode<T> *actualNode = arr->getPos(j);
             DobleNode<T> *prevNode = arr->getPos(j-1);
             actualNode->setDato(prevNode->getDato());
+            movements.push_back(movement(j+1,j));
         }
         arr->getPos(j)->setDato(actual);
+        movements.push_back(movement(j+1,i));
     }
 }
 
@@ -181,8 +177,10 @@ void MainWindow::InsertionSort(Stack<T> *arr) //sobrecarga para la pila
             SimpleNode<T> *actualNode = arr->getPos(j);
             SimpleNode<T> *prevNode = arr->getPos(j-1);
             actualNode->setDato(prevNode->getDato());
+            movements.push_back(movement(j+1,j));
         }
         arr->getPos(j)->setDato(actual);
+        movements.push_back(movement(j+1,i));
     }
 }
 
@@ -199,21 +197,32 @@ void MainWindow::InsertionSort(Queue<T> *arr) //sobrecarga para la cola
             SimpleNode<T> *actualNode = arr->getPos(j);
             SimpleNode<T> *prevNode = arr->getPos(j-1);
             actualNode->setDato(prevNode->getDato());
+            movements.push_back(movement(j+1,j));
         }
         arr->getPos(j)->setDato(actual);
+        movements.push_back(movement(j+1,i));
     }
 }
 
 
 /* MERGE SORT */
+
+void MainWindow::MergeAnimation(int i,int pos1, int pos2)
+{
+    return;
+    QGraphicsLineItem *line = scene->addLine(pos1,i*20,pos2,i*20,Qt::DashLine);
+    line->setPen(QPen(Qt::red));
+    lines.push_back(line);
+}
+
 template <class T>
-void MainWindow::MergeSort(SimpleList<T> *arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
+void MainWindow::MergeSort(SimpleList<T> *arr, int leftIndx, int rightIndx,int animationIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
 {
     if (leftIndx < rightIndx)
     {
         int pivote = leftIndx+(rightIndx-leftIndx)/2;
-        MergeSort(arr, leftIndx, pivote);
-        MergeSort(arr, pivote+1, rightIndx);
+        MergeSort(arr, leftIndx, pivote,animationIndx + 1);
+        MergeSort(arr, pivote+1, rightIndx,animationIndx + 1);
         Merge(arr, leftIndx, pivote, rightIndx);
     }
 }
@@ -670,6 +679,7 @@ void MainWindow::SelectionSort(SimpleList<T> *arr, int tamanio) //lista simple
         atemp = arr->getPos(i)->getDato();
         arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
         arr->getPos(min_idx)->setDato(atemp);
+        movements.push_back(movement(min_idx,i));
     }
 }
 
@@ -687,6 +697,7 @@ void MainWindow::SelectionSort(DobleList<T> *arr, int tamanio) //lista doble
         atemp = arr->getPos(i)->getDato();
         arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
         arr->getPos(min_idx)->setDato(atemp);
+        movements.push_back(movement(min_idx,i));
     }
 }
 
@@ -704,6 +715,7 @@ void MainWindow::SelectionSort(DCList<T> *arr, int tamanio) //lista doble circul
         atemp = arr->getPos(i)->getDato();
         arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
         arr->getPos(min_idx)->setDato(atemp);
+        movements.push_back(movement(min_idx,i));
     }
 }
 
@@ -721,6 +733,7 @@ void MainWindow::SelectionSort(Stack<T> *arr, int tamanio) //pila
         atemp = arr->getPos(i)->getDato();
         arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
         arr->getPos(min_idx)->setDato(atemp);
+        movements.push_back(movement(min_idx,i));
     }
 }
 
@@ -738,6 +751,7 @@ void MainWindow::SelectionSort(Queue<T> *arr, int tamanio) //cola
         atemp = arr->getPos(i)->getDato();
         arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
         arr->getPos(min_idx)->setDato(atemp);
+        movements.push_back(movement(min_idx,i));
     }
 }
 
@@ -1140,7 +1154,10 @@ void MainWindow::ShellSort(SimpleList<T> *arr, int tamano) //lista simple
             T temp =  arr->getPos(i)->getDato();
             int j;
             for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+            {
                 arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+                movements.push_back(movement(j,j - gap));
+            }
              arr->getPos(j)->setDato(temp);
         }
 }
@@ -1154,7 +1171,10 @@ void MainWindow::ShellSort(DobleList<T> *arr, int tamano) //lista doble
            T temp =  arr->getPos(i)->getDato();
            int j;
            for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+           {
                arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+               movements.push_back(movement(j,j - gap));
+           }
             arr->getPos(j)->setDato(temp);
        }
 }
@@ -1168,7 +1188,10 @@ void MainWindow::ShellSort(DCList<T> *arr, int tamano) //lista doble circular
            T temp =  arr->getPos(i)->getDato();
            int j;
            for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+           {
                arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+               movements.push_back(movement(j,j - gap));
+           }
             arr->getPos(j)->setDato(temp);
        }
 }
@@ -1182,7 +1205,10 @@ void MainWindow::ShellSort(Stack<T> *arr, int tamano) //pila
            T temp =  arr->getPos(i)->getDato();
            int j;
            for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+           {
                arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+               movements.push_back(movement(j,j - gap));
+           }
             arr->getPos(j)->setDato(temp);
        }
 }
@@ -1196,10 +1222,17 @@ void MainWindow::ShellSort(Queue<T> *arr, int tamano) //cola
            T temp =  arr->getPos(i)->getDato();
            int j;
            for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+           {
                arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+               movements.push_back(movement(j,j - gap));
+           }
             arr->getPos(j)->setDato(temp);
        }
 }
+
+
+/* BUBBLE SORT */
+
 
 /*METODO PARA LA OBTENCION ALEATORIA DE N PALABRAS (N = CANTIDAD)*/
 void MainWindow::buildWords(SimpleList<string> *arr, int cantidad)
@@ -1215,6 +1248,217 @@ void MainWindow::buildWords(SimpleList<string> *arr, int cantidad)
     }
 }
 
+template<class T>
+void MainWindow::BubbleSort(SimpleList<T> arr)
+{
+    int i,j,n;
+    n = arr.getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr[j]->getDato() > arr[j+1]->getDato())
+            {
+                arr.swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+
+template<class T>
+void MainWindow::BubbleSort(DobleList<T> arr)
+{
+    int i,j,n;
+    n = arr.getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr[j]->getDato() > arr[j+1]->getDato())
+            {
+                arr.swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+template<class T>
+void MainWindow::BubbleSort(DCList<T> arr)
+{
+    int i,j,n;
+    n = arr.getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr[j]->getDato() > arr[j+1]->getDato())
+            {
+                arr.swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+template<class T>
+void MainWindow::BubbleSort(Stack<T> arr)
+{
+    int i,j,n;
+    n = arr.getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr[j]->getDato() > arr[j+1]->getDato())
+            {
+                arr.swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+template<class T>
+void MainWindow::BubbleSort(Queue<T> arr)
+{
+    int i,j,n;
+    n = arr.getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr[j]->getDato() > arr[j+1]->getDato())
+            {
+                arr.swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+/* BUBBLEDOBLE */
+template<class T>
+void MainWindow::DobleBubble(SimpleList<T> &arr, int end)
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
+            {
+                arr.swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
+
+template<class T>
+void MainWindow::DobleBubble(DobleList<T> &arr, int end)
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
+            {
+                arr.swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
+
+template<class T>
+void MainWindow::DobleBubble(DCList<T> &arr, int end)
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
+            {
+                arr.swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
+
+template<class T>
+void MainWindow::DobleBubble(Stack<T> &arr, int end)
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
+            {
+                arr.swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
+
+template<class T>
+void MainWindow::DobleBubble(Queue<T> &arr, int end)
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
+            {
+                arr.swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
 string MainWindow::buildWordsAux(int indice)
 {
     ifstream file("/home/retr0/Escritorio/Datos/ED_Progra_1/Primer_Proyecto_Programado/palabras.txt");

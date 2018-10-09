@@ -28,8 +28,8 @@ public:
     QWidget *centralWidget;
     QGraphicsView *graphicsView;
     QRadioButton *radioButton;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
+    QPushButton *btnRandonInt;
+    QPushButton *btnQuick;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -47,12 +47,12 @@ public:
         radioButton = new QRadioButton(centralWidget);
         radioButton->setObjectName(QStringLiteral("radioButton"));
         radioButton->setGeometry(QRect(820, 120, 82, 17));
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(110, 30, 111, 23));
-        pushButton_2 = new QPushButton(centralWidget);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setGeometry(QRect(350, 70, 75, 23));
+        btnRandonInt = new QPushButton(centralWidget);
+        btnRandonInt->setObjectName(QStringLiteral("btnRandonInt"));
+        btnRandonInt->setGeometry(QRect(110, 30, 111, 23));
+        btnQuick = new QPushButton(centralWidget);
+        btnQuick->setObjectName(QStringLiteral("btnQuick"));
+        btnQuick->setGeometry(QRect(460, 70, 75, 23));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -74,8 +74,8 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         radioButton->setText(QApplication::translate("MainWindow", "Pausar", nullptr));
-        pushButton->setText(QApplication::translate("MainWindow", "Random 10 int", nullptr));
-        pushButton_2->setText(QApplication::translate("MainWindow", "QuickSort", nullptr));
+        btnRandonInt->setText(QApplication::translate("MainWindow", "Random 10 int", nullptr));
+        btnQuick->setText(QApplication::translate("MainWindow", "QuickSort", nullptr));
     } // retranslateUi
 
 };
