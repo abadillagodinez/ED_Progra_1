@@ -93,7 +93,7 @@ tData Stack<tData>::pop()
             actual = head;
             head = head->getNext();
             lSize--;
-            return actual;
+            return actual->getDato();
         }
     }/*else*/
 }

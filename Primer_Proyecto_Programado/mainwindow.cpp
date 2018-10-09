@@ -9,10 +9,12 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-    SimpleList<string> *list = new SimpleList<string>();
-    buildWords(list,7);
+    Stack<int> *list = new Stack<int>();
+    //buildWords(list,7);
+    //for(int i = 10; i > 0; i--) list->enqueue(i);
+    for(int i = 0; i < 10; i++) list->push(i);
     list->print();
-    ShellSort(list, list->getSize());
+    HeapSort(list/*, list->getSize()*/);
     list->print();
 }
 
@@ -113,13 +115,15 @@ void MainWindow::on_btnQuick_clicked()
 
 /* INSERTION SORT */
 template <class T>
-void MainWindow::InsertionSort(SimpleList<T>* arr)
+void MainWindow::InsertionSort(SimpleList<T>* arr) //Lista simple
 {
     int i, j;
     T actual;
-    for (i = 1; i < arr->getSize(); i++) {
+    for (i = 1; i < arr->getSize(); i++)
+    {
         actual = arr->getPos(i)->getDato();
-        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--) {
+        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        {
             SimpleNode<T> *actualNode = arr->getPos(j);
             SimpleNode<T> *prevNode = arr->getPos(j-1);
             actualNode->setDato(prevNode->getDato());
@@ -128,6 +132,77 @@ void MainWindow::InsertionSort(SimpleList<T>* arr)
     }
 }
 
+template <class T>
+void MainWindow::InsertionSort(DobleList<T> *arr) //sobrecarga para la lista doble
+{
+    int i, j;
+    T actual;
+    for (i = 1; i < arr->getSize(); i++)
+    {
+        actual = arr->getPos(i)->getDato();
+        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        {
+            DobleNode<T> *actualNode = arr->getPos(j);
+            DobleNode<T> *prevNode = arr->getPos(j-1);
+            actualNode->setDato(prevNode->getDato());
+        }
+        arr->getPos(j)->setDato(actual);
+    }
+}
+
+template <class T>
+void MainWindow::InsertionSort(DCList<T> *arr) //sobrecarga para la lista circular
+{
+    int i, j;
+    T actual;
+    for (i = 1; i < arr->getSize(); i++)
+    {
+        actual = arr->getPos(i)->getDato();
+        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        {
+            DobleNode<T> *actualNode = arr->getPos(j);
+            DobleNode<T> *prevNode = arr->getPos(j-1);
+            actualNode->setDato(prevNode->getDato());
+        }
+        arr->getPos(j)->setDato(actual);
+    }
+}
+
+template <class T>
+void MainWindow::InsertionSort(Stack<T> *arr) //sobrecarga para la pila
+{
+    int i, j;
+    T actual;
+    for (i = 1; i < arr->getSize(); i++)
+    {
+        actual = arr->getPos(i)->getDato();
+        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        {
+            SimpleNode<T> *actualNode = arr->getPos(j);
+            SimpleNode<T> *prevNode = arr->getPos(j-1);
+            actualNode->setDato(prevNode->getDato());
+        }
+        arr->getPos(j)->setDato(actual);
+    }
+}
+
+template <class T>
+void MainWindow::InsertionSort(Queue<T> *arr) //sobrecarga para la cola
+{
+    int i, j;
+    T actual;
+    for (i = 1; i < arr->getSize(); i++)
+    {
+        actual = arr->getPos(i)->getDato();
+        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        {
+            SimpleNode<T> *actualNode = arr->getPos(j);
+            SimpleNode<T> *prevNode = arr->getPos(j-1);
+            actualNode->setDato(prevNode->getDato());
+        }
+        arr->getPos(j)->setDato(actual);
+    }
+}
 
 
 /* MERGE SORT */
@@ -188,6 +263,244 @@ void MainWindow::Merge(SimpleList<T> *arr, int leftIndx, int pivote, int rigthIn
     }
 }
 
+/*(doble list)*/
+template <class T>
+void MainWindow::MergeSort(DobleList<T> *arr, int leftIndx, int rightIndx) //Sobrecarga para la lista doble
+{
+    if (leftIndx < rightIndx)
+    {
+        int pivote = leftIndx+(rightIndx-leftIndx)/2;
+        MergeSort(arr, leftIndx, pivote);
+        MergeSort(arr, pivote+1, rightIndx);
+        Merge(arr, leftIndx, pivote, rightIndx);
+    }
+}
+
+template <class T>
+void MainWindow::Merge(DobleList<T> *arr, int leftIndx, int pivote, int rigthIndx)
+{
+    int i, j, k; //INDICES DE LOS CICLOS
+    int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
+    int nuevList2 =  rigthIndx - pivote; //TAMANO DE LA SEGUNDA LISTA NUEVA
+    DobleList<T> *menores = new DobleList<T>();
+    DobleList<T> *mayores = new DobleList<T>();
+
+    for (i = 0; i < nuevList1; i++)
+        menores->insertAtTail(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+    for (j = 0; j < nuevList2; j++)
+         mayores->insertAtTail(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+    i = 0;
+    j = 0;
+    k = leftIndx;
+    while (i < nuevList1 && j < nuevList2)
+    {
+        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        {
+            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            i++;
+        }
+        else
+        {
+            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            j++;
+        }
+        k++;
+    }
+    while (i < nuevList1)
+    {
+        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        i++;
+        k++;
+    }
+    while (j < nuevList2)
+    {
+        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        j++;
+        k++;
+    }
+}
+
+/*(doble circular list)*/
+template <class T>
+void MainWindow::MergeSort(DCList<T> *arr, int leftIndx, int rightIndx) //Sobrecarga para la lista doble circular
+{
+    if (leftIndx < rightIndx)
+    {
+        int pivote = leftIndx+(rightIndx-leftIndx)/2;
+        MergeSort(arr, leftIndx, pivote);
+        MergeSort(arr, pivote+1, rightIndx);
+        Merge(arr, leftIndx, pivote, rightIndx);
+    }
+}
+
+template <class T>
+void MainWindow::Merge(DCList<T> *arr, int leftIndx, int pivote, int rigthIndx)
+{
+    int i, j, k; //INDICES DE LOS CICLOS
+    int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
+    int nuevList2 =  rigthIndx - pivote; //TAMANO DE LA SEGUNDA LISTA NUEVA
+    DCList<T> *menores = new DCList<T>();
+    DCList<T> *mayores = new DCList<T>();
+
+    for (i = 0; i < nuevList1; i++)
+        menores->insertAtTail(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+    for (j = 0; j < nuevList2; j++)
+         mayores->insertAtTail(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+    i = 0;
+    j = 0;
+    k = leftIndx;
+    while (i < nuevList1 && j < nuevList2)
+    {
+        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        {
+            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            i++;
+        }
+        else
+        {
+            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            j++;
+        }
+        k++;
+    }
+    while (i < nuevList1)
+    {
+        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        i++;
+        k++;
+    }
+    while (j < nuevList2)
+    {
+        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        j++;
+        k++;
+    }
+}
+
+/*(pila)*/
+template <class T>
+void MainWindow::MergeSort(Stack<T> *arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
+{
+    if (leftIndx < rightIndx)
+    {
+        int pivote = leftIndx+(rightIndx-leftIndx)/2;
+        MergeSort(arr, leftIndx, pivote);
+        MergeSort(arr, pivote+1, rightIndx);
+        Merge(arr, leftIndx, pivote, rightIndx);
+    }
+}
+
+template <class T>
+void MainWindow::Merge(Stack<T> *arr, int leftIndx, int pivote, int rigthIndx)
+{
+    int i, j, k; //INDICES DE LOS CICLOS
+    int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
+    int nuevList2 =  rigthIndx - pivote; //TAMANO DE LA SEGUNDA LISTA NUEVA
+    Stack<T> *menores = new Stack<T>();
+    Stack<T> *mayores = new Stack<T>();
+
+    for (i = 0; i < nuevList1; i++)
+        menores->push(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+    for (j = 0; j < nuevList2; j++)
+         mayores->push(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+    mayores = invertirPila(mayores);
+    menores = invertirPila(menores);
+    i = 0;
+    j = 0;
+    k = leftIndx;
+    while (i < nuevList1 && j < nuevList2)
+    {
+        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        {
+            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            i++;
+        }
+        else
+        {
+            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            j++;
+        }
+        k++;
+    }
+    while (i < nuevList1)
+    {
+        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        i++;
+        k++;
+    }
+    while (j < nuevList2)
+    {
+        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        j++;
+        k++;
+    }
+}
+
+template <class T>
+Stack<T>* MainWindow::invertirPila(Stack<T> *arr) //metodo auxiliar para el merge con pila
+{
+    Stack<T> *temp = new Stack<T>();
+    while(arr->getSize() > 0)
+        temp->push(arr->pop());
+    return temp;
+}
+
+/*Cola*/
+template <class T>
+void MainWindow::MergeSort(Queue<T> *arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
+{
+    if (leftIndx < rightIndx)
+    {
+        int pivote = leftIndx+(rightIndx-leftIndx)/2;
+        MergeSort(arr, leftIndx, pivote);
+        MergeSort(arr, pivote+1, rightIndx);
+        Merge(arr, leftIndx, pivote, rightIndx);
+    }
+}
+
+template <class T>
+void MainWindow::Merge(Queue<T> *arr, int leftIndx, int pivote, int rigthIndx)
+{
+    int i, j, k; //INDICES DE LOS CICLOS
+    int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
+    int nuevList2 =  rigthIndx - pivote; //TAMANO DE LA SEGUNDA LISTA NUEVA
+    Queue<T> *menores = new Queue<T>();
+    Queue<T> *mayores = new Queue<T>();
+
+    for (i = 0; i < nuevList1; i++)
+        menores->enqueue(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+    for (j = 0; j < nuevList2; j++)
+         mayores->enqueue(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+    i = 0;
+    j = 0;
+    k = leftIndx;
+    while (i < nuevList1 && j < nuevList2)
+    {
+        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        {
+            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            i++;
+        }
+        else
+        {
+            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            j++;
+        }
+        k++;
+    }
+    while (i < nuevList1)
+    {
+        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        i++;
+        k++;
+    }
+    while (j < nuevList2)
+    {
+        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        j++;
+        k++;
+    }
+}
 
 
 /* QUICK SORT */
@@ -198,7 +511,6 @@ void MainWindow::QuickSort(SimpleList<T> *arr, int low, int high) //Metodo para 
         int pi = partition(arr, low, high);
         QuickSort(arr, low, pi - 1);//Makes a new group with the highers
         QuickSort(arr, pi + 1, high);//Makes a new group with the lowers
-
       }
 }
 
@@ -210,7 +522,128 @@ int MainWindow::partition(SimpleList<T> *arr, int low, int high)
     int i = (low - 1);
     for (int j = low; j <= (high - 1); j++)
     {
-        if (arr->getPos(j)->dato <= pivot->dato){ //changes acording to which one is higher
+        if (arr->getPos(j)->dato <= pivot->dato)//changes acording to which one is higher
+        {
+          i++;
+          arr->swap(i,j);
+          movements.push_back(movement(i,j));
+        }
+    }
+    arr->swap((i+ 1),high);
+    movements.push_back(movement(i,high));
+    return( i + 1 );
+}
+
+/*lista doble*/
+template<class T>
+void MainWindow::QuickSort(DobleList<T> *arr, int low, int high) //Metodo para la lista simple
+{
+    if (low < high){
+        int pi = partition(arr, low, high);
+        QuickSort(arr, low, pi - 1);//Makes a new group with the highers
+        QuickSort(arr, pi + 1, high);//Makes a new group with the lowers
+      }
+}
+
+template<class T>
+int MainWindow::partition(DobleList<T> *arr, int low, int high)
+{
+    DobleNode<T>* pivot = arr->getPos(high);
+    int i = (low - 1);
+    for (int j = low; j <= (high - 1); j++)
+    {
+        if (arr->getPos(j)->getDato() <= pivot->getDato()) //changes acording to which one is higher
+        {
+          i++;
+          arr->swap(i,j);
+          movements.push_back(movement(i,j));
+        }
+    }
+    arr->swap((i+ 1),high);
+    movements.push_back(movement(i,high));
+    return( i + 1 );
+}
+
+/*lista doble circular*/
+template<class T>
+void MainWindow::QuickSort(DCList<T> *arr, int low, int high) //Metodo para la lista simple
+{
+    if (low < high){
+        int pi = partition(arr, low, high);
+        QuickSort(arr, low, pi - 1);//Makes a new group with the highers
+        QuickSort(arr, pi + 1, high);//Makes a new group with the lowers
+      }
+}
+
+template<class T>
+int MainWindow::partition(DCList<T> *arr, int low, int high)
+{
+    DobleNode<T>* pivot = arr->getPos(high);
+    int i = (low - 1);
+    for (int j = low; j <= (high - 1); j++)
+    {
+        if (arr->getPos(j)->getDato() <= pivot->getDato()) //changes acording to which one is higher
+        {
+          i++;
+          arr->swap(i,j);
+          movements.push_back(movement(i,j));
+        }
+    }
+    arr->swap((i+ 1),high);
+    movements.push_back(movement(i,high));
+    return( i + 1 );
+}
+
+/*Pila*/
+template<class T>
+void MainWindow::QuickSort(Stack<T> *arr, int low, int high) //Metodo para la lista simple
+{
+    if (low < high){
+        int pi = partition(arr, low, high);
+        QuickSort(arr, low, pi - 1);//Makes a new group with the highers
+        QuickSort(arr, pi + 1, high);//Makes a new group with the lowers
+      }
+}
+
+template<class T>
+int MainWindow::partition(Stack<T> *arr, int low, int high)
+{
+    SimpleNode<T>* pivot = arr->getPos(high);
+    int i = (low - 1);
+    for (int j = low; j <= (high - 1); j++)
+    {
+        if (arr->getPos(j)->dato <= pivot->dato)//changes acording to which one is higher
+        {
+          i++;
+          arr->swap(i,j);
+          movements.push_back(movement(i,j));
+        }
+    }
+    arr->swap((i+ 1),high);
+    movements.push_back(movement(i,high));
+    return( i + 1 );
+}
+
+/*cola*/
+template<class T>
+void MainWindow::QuickSort(Queue<T> *arr, int low, int high) //Metodo para la lista simple
+{
+    if (low < high){
+        int pi = partition(arr, low, high);
+        QuickSort(arr, low, pi - 1);//Makes a new group with the highers
+        QuickSort(arr, pi + 1, high);//Makes a new group with the lowers
+      }
+}
+
+template<class T>
+int MainWindow::partition(Queue<T> *arr, int low, int high)
+{
+    SimpleNode<T>* pivot = arr->getPos(high);
+    int i = (low - 1);
+    for (int j = low; j <= (high - 1); j++)
+    {
+        if (arr->getPos(j)->dato <= pivot->dato)//changes acording to which one is higher
+        {
           i++;
           arr->swap(i,j);
           movements.push_back(movement(i,j));
@@ -222,17 +655,77 @@ int MainWindow::partition(SimpleList<T> *arr, int low, int high)
 }
 
 
-
 /* SELECTION SORT */
 template <class T>
-void MainWindow::SelectionSort(SimpleList<T> *arr)
+void MainWindow::SelectionSort(SimpleList<T> *arr, int tamanio) //lista simple
 {
-    int n = arr->getSize();
-    SelectionAux(arr, n);
+    T atemp;
+    int i, j, min_idx;  //indices de ciclos
+    for(i = 0; i < tamanio-1; i++)
+    {
+        min_idx = i;
+        for(j = i+1; j < tamanio; j++)
+            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+                min_idx = j;
+        atemp = arr->getPos(i)->getDato();
+        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
+        arr->getPos(min_idx)->setDato(atemp);
+    }
 }
 
 template <class T>
-void MainWindow::SelectionAux(SimpleList<T> *arr, int tamanio)
+void MainWindow::SelectionSort(DobleList<T> *arr, int tamanio) //lista doble
+{
+    T atemp;
+    int i, j, min_idx;  //indices de ciclos
+    for(i = 0; i < tamanio-1; i++)
+    {
+        min_idx = i;
+        for(j = i+1; j < tamanio; j++)
+            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+                min_idx = j;
+        atemp = arr->getPos(i)->getDato();
+        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
+        arr->getPos(min_idx)->setDato(atemp);
+    }
+}
+
+template <class T>
+void MainWindow::SelectionSort(DCList<T> *arr, int tamanio) //lista doble circular
+{
+    T atemp;
+    int i, j, min_idx;  //indices de ciclos
+    for(i = 0; i < tamanio-1; i++)
+    {
+        min_idx = i;
+        for(j = i+1; j < tamanio; j++)
+            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+                min_idx = j;
+        atemp = arr->getPos(i)->getDato();
+        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
+        arr->getPos(min_idx)->setDato(atemp);
+    }
+}
+
+template <class T>
+void MainWindow::SelectionSort(Stack<T> *arr, int tamanio) //pila
+{
+    T atemp;
+    int i, j, min_idx;  //indices de ciclos
+    for(i = 0; i < tamanio-1; i++)
+    {
+        min_idx = i;
+        for(j = i+1; j < tamanio; j++)
+            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+                min_idx = j;
+        atemp = arr->getPos(i)->getDato();
+        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
+        arr->getPos(min_idx)->setDato(atemp);
+    }
+}
+
+template <class T>
+void MainWindow::SelectionSort(Queue<T> *arr, int tamanio) //cola
 {
     T atemp;
     int i, j, min_idx;  //indices de ciclos
@@ -407,7 +900,7 @@ int MainWindow::mayorCantidadLetras(SimpleList<string> *arr)
 
 /* HEAP SORT */
 template <class T>
-void MainWindow::HeapSort(SimpleList<T> *arr)
+void MainWindow::HeapSort(SimpleList<T> *arr) //lista simple
 {
     int tamano = arr->getSize();
 
@@ -453,12 +946,193 @@ void MainWindow::HeapSortAux(SimpleList<T> *arr, int largo, int aTratar)
     }
 }
 
+template <class T>
+void MainWindow::HeapSort(DobleList<T> *arr) //lista doble
+{
+    int tamano = arr->getSize();
 
+    for(int i = tamano / 2 - 1; i >= 0; i--)
+        HeapSortAux(arr, tamano, i);
 
+    for(int i = tamano - 1; i >= 0; i--)
+    {
+        //cambio de los valores
+        T temp = arr->getPos(i)->getDato();
+        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
+        arr->getPos(0)->setDato(temp);
+
+        HeapSortAux(arr, i, 0);
+    }
+
+}
+
+template <class T>
+void MainWindow::HeapSortAux(DobleList<T> *arr, int largo, int aTratar)
+{
+    int mayor = aTratar;
+    int izq = 2*aTratar + 1; //hijo izquierdo en la lista
+    int der = 2*aTratar + 2; //hijo derecho en la lista
+
+    //si el hijo izquierdo es mayor que el padre
+    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+        mayor = izq;
+
+    //si el hijo derecho es mayor que el padre
+    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+        mayor = der;
+
+    if(mayor != aTratar)
+    {
+        //Cambio del largo y el aTratar
+        T temp = arr->getPos(mayor)->getDato();
+        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
+        arr->getPos(aTratar)->setDato(temp);
+
+        HeapSortAux(arr, largo, mayor);
+    }
+}
+
+template <class T>
+void MainWindow::HeapSort(DCList<T> *arr) //lista doble circular
+{
+    int tamano = arr->getSize();
+
+    for(int i = tamano / 2 - 1; i >= 0; i--)
+        HeapSortAux(arr, tamano, i);
+
+    for(int i = tamano - 1; i >= 0; i--)
+    {
+        //cambio de los valores
+        T temp = arr->getPos(i)->getDato();
+        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
+        arr->getPos(0)->setDato(temp);
+
+        HeapSortAux(arr, i, 0);
+    }
+
+}
+
+template <class T>
+void MainWindow::HeapSortAux(DCList<T> *arr, int largo, int aTratar)
+{
+    int mayor = aTratar;
+    int izq = 2*aTratar + 1; //hijo izquierdo en la lista
+    int der = 2*aTratar + 2; //hijo derecho en la lista
+
+    //si el hijo izquierdo es mayor que el padre
+    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+        mayor = izq;
+
+    //si el hijo derecho es mayor que el padre
+    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+        mayor = der;
+
+    if(mayor != aTratar)
+    {
+        //Cambio del largo y el aTratar
+        T temp = arr->getPos(mayor)->getDato();
+        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
+        arr->getPos(aTratar)->setDato(temp);
+
+        HeapSortAux(arr, largo, mayor);
+    }
+}
+
+template <class T>
+void MainWindow::HeapSort(Stack<T> *arr) //pila
+{
+    int tamano = arr->getSize();
+
+    for(int i = tamano / 2 - 1; i >= 0; i--)
+        HeapSortAux(arr, tamano, i);
+
+    for(int i = tamano - 1; i >= 0; i--)
+    {
+        //cambio de los valores
+        T temp = arr->getPos(i)->getDato();
+        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
+        arr->getPos(0)->setDato(temp);
+
+        HeapSortAux(arr, i, 0);
+    }
+
+}
+
+template <class T>
+void MainWindow::HeapSortAux(Stack<T> *arr, int largo, int aTratar)
+{
+    int mayor = aTratar;
+    int izq = 2*aTratar + 1; //hijo izquierdo en la lista
+    int der = 2*aTratar + 2; //hijo derecho en la lista
+
+    //si el hijo izquierdo es mayor que el padre
+    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+        mayor = izq;
+
+    //si el hijo derecho es mayor que el padre
+    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+        mayor = der;
+
+    if(mayor != aTratar)
+    {
+        //Cambio del largo y el aTratar
+        T temp = arr->getPos(mayor)->getDato();
+        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
+        arr->getPos(aTratar)->setDato(temp);
+
+        HeapSortAux(arr, largo, mayor);
+    }
+}
+
+template <class T>
+void MainWindow::HeapSort(Queue<T> *arr) //cola
+{
+    int tamano = arr->getSize();
+
+    for(int i = tamano / 2 - 1; i >= 0; i--)
+        HeapSortAux(arr, tamano, i);
+
+    for(int i = tamano - 1; i >= 0; i--)
+    {
+        //cambio de los valores
+        T temp = arr->getPos(i)->getDato();
+        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
+        arr->getPos(0)->setDato(temp);
+
+        HeapSortAux(arr, i, 0);
+    }
+
+}
+
+template <class T>
+void MainWindow::HeapSortAux(Queue<T> *arr, int largo, int aTratar)
+{
+    int mayor = aTratar;
+    int izq = 2*aTratar + 1; //hijo izquierdo en la lista
+    int der = 2*aTratar + 2; //hijo derecho en la lista
+
+    //si el hijo izquierdo es mayor que el padre
+    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+        mayor = izq;
+
+    //si el hijo derecho es mayor que el padre
+    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+        mayor = der;
+
+    if(mayor != aTratar)
+    {
+        //Cambio del largo y el aTratar
+        T temp = arr->getPos(mayor)->getDato();
+        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
+        arr->getPos(aTratar)->setDato(temp);
+
+        HeapSortAux(arr, largo, mayor);
+    }
+}
 
 /* SHELL SORT */
  template <class T>
-void MainWindow::ShellSort(SimpleList<T> *arr, int tamano)
+void MainWindow::ShellSort(SimpleList<T> *arr, int tamano) //lista simple
 {
     for (int gap = tamano/2; gap > 0; gap = gap/2)
         for(int i = gap; i < tamano; i += 1)
@@ -471,8 +1145,61 @@ void MainWindow::ShellSort(SimpleList<T> *arr, int tamano)
         }
 }
 
+template <class T>
+void MainWindow::ShellSort(DobleList<T> *arr, int tamano) //lista doble
+{
+   for (int gap = tamano/2; gap > 0; gap = gap/2)
+       for(int i = gap; i < tamano; i += 1)
+       {
+           T temp =  arr->getPos(i)->getDato();
+           int j;
+           for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+               arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+            arr->getPos(j)->setDato(temp);
+       }
+}
 
+template <class T>
+void MainWindow::ShellSort(DCList<T> *arr, int tamano) //lista doble circular
+{
+   for (int gap = tamano/2; gap > 0; gap = gap/2)
+       for(int i = gap; i < tamano; i += 1)
+       {
+           T temp =  arr->getPos(i)->getDato();
+           int j;
+           for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+               arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+            arr->getPos(j)->setDato(temp);
+       }
+}
 
+template <class T>
+void MainWindow::ShellSort(Stack<T> *arr, int tamano) //pila
+{
+   for (int gap = tamano/2; gap > 0; gap = gap/2)
+       for(int i = gap; i < tamano; i += 1)
+       {
+           T temp =  arr->getPos(i)->getDato();
+           int j;
+           for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+               arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+            arr->getPos(j)->setDato(temp);
+       }
+}
+
+template <class T>
+void MainWindow::ShellSort(Queue<T> *arr, int tamano) //cola
+{
+   for (int gap = tamano/2; gap > 0; gap = gap/2)
+       for(int i = gap; i < tamano; i += 1)
+       {
+           T temp =  arr->getPos(i)->getDato();
+           int j;
+           for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+               arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+            arr->getPos(j)->setDato(temp);
+       }
+}
 
 /*METODO PARA LA OBTENCION ALEATORIA DE N PALABRAS (N = CANTIDAD)*/
 void MainWindow::buildWords(SimpleList<string> *arr, int cantidad)
