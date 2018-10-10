@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1126</width>
-    <height>462</height>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>160</y>
+      <y>200</y>
       <width>931</width>
       <height>231</height>
      </rect>
@@ -37,17 +37,17 @@
      <string>Pausar</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnRandonInt">
+   <widget class="QPushButton" name="btnRandom">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>30</y>
+      <x>310</x>
+      <y>10</y>
       <width>111</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Random 10 int</string>
+     <string>Random</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnQuick">
@@ -63,6 +63,191 @@
      <string>QuickSort</string>
     </property>
    </widget>
+   <widget class="QComboBox" name="cbxEstructura">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>10</y>
+      <width>151</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="currentText">
+     <string>Lista Simple</string>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <item>
+     <property name="text">
+      <string>Lista Simple</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Lista Doble</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Lista Doble Circular</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Pila</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Cola</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QComboBox" name="cbxDato">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>50</y>
+      <width>151</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>Enteros</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Letras</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Strings</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Palabras</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Otros</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="lblEstructura">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Estructura:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblDato">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dato:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblCantidadDatos">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>130</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cantidad:</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="sbxCantidad">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>130</y>
+      <width>151</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="sbxRango1">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>90</y>
+      <width>71</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblRango">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>90</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Rango:</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="sbxRango2">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>90</y>
+      <width>71</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>10</number>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -70,7 +255,7 @@
      <x>0</x>
      <y>0</y>
      <width>1126</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
