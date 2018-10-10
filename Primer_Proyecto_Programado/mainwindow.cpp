@@ -16,14 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
-
-    Stack<int> *list = new Stack<int>();
-    //buildWords(list,7);
-    //for(int i = 10; i > 0; i--) list->enqueue(i);
-    for(int i = 0; i < 10; i++) list->push(i);
-    list->print();
-    HeapSort(list/*, list->getSize()*/);
-    list->print();
+    ui->sbxRango2->setMinimum(ui->sbxRango1->value()+1);
 }
 
 template <typename T>
@@ -76,28 +69,64 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_btnRandonInt_clicked()
+void MainWindow::on_btnRandom_clicked()
 {
-    srand(time(NULL)); //AGREGAR EL RANGO ALEATORIO
-    int rango = 10;
-    int valor;
-    int sup = 1000; //limite sup que hay que ponerle un get de un spinbox
-    int inf = 1; //limite inf que hay que ponerle un get de un spinbox
-    for(int i = 0; i<rango;i++)
+    srand(time(NULL));
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
     {
-        valor = rand() % sup + inf;
-        list->insertAtHead(valor);
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            list->~SimpleList();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = ui->sbxRango2->value();
+            int inf = ui->sbxRango1->value();
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                list->insertAtHead(valor);
+            }
+            scene->clear();;
+            GenerateBoxes(list);
+        }
     }
-    GenerateBoxes(list);
 }
 
 void MainWindow::on_btnQuick_clicked()
 {
     list->print();
-    ShellSort(list, list->getSize());
+    DobleBubble(list, list->getSize()-1);
     //Swap(1,2);
     list->print();
 }
+
+void MainWindow::on_cbxDato_currentTextChanged(const QString &arg1)
+{
+    if(ui->cbxDato->currentText() == "Palabras")
+    {
+        ui->sbxRango1->setEnabled(true);
+        ui->sbxRango2->setEnabled(true);
+        ui->sbxCantidad->setMinimum(10);
+        ui->sbxCantidad->setMaximum(100);
+    }
+    else if(ui->cbxDato->currentText() == "Palabras")
+    {
+        ui->sbxRango1->setEnabled(false);
+        ui->sbxRango2->setEnabled(false);
+        ui->sbxCantidad->setMinimum(10);
+        ui->sbxCantidad->setMaximum(100);
+    }
+
+    else if(ui->cbxDato->currentText() == "Letras")
+    {
+        //ui->lblCantidadDatos->set
+        ui->sbxRango1->setEnabled(false);
+        ui->sbxRango2->setEnabled(false);
+        ui->sbxCantidad->setMinimum(2);
+        ui->sbxCantidad->setMaximum(27);
+    }
+}
+
 
 
 /* ALGORITMOS DE ORDENAMIENTO */
@@ -1232,7 +1261,218 @@ void MainWindow::ShellSort(Queue<T> *arr, int tamano) //cola
 
 
 /* BUBBLE SORT */
+template<class T>
+void MainWindow::BubbleSort(SimpleList<T> *arr)
+{
+    int i,j,n;
+    n = arr->getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            {
+                arr->swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
 
+template<class T>
+void MainWindow::BubbleSort(DobleList<T> *arr)
+{
+    int i,j,n;
+    n = arr->gettSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            {
+                arr.swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+template<class T>
+void MainWindow::BubbleSort(DCList<T> *arr)
+{
+    int i,j,n;
+    n = arr->getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            {
+                arr->swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+template<class T>
+void MainWindow::BubbleSort(Stack<T> *arr)
+{
+    int i,j,n;
+    n = arr->getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            {
+                arr->swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+template<class T>
+void MainWindow::BubbleSort(Queue<T> *arr)
+{
+    int i,j,n;
+    n = arr->getSize();
+    for (i = 0; i< n-1; i++)
+    {
+        for(j = 0; j<n-i-1; j++)
+        {
+            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            {
+                arr->swap(j,j+1);
+                movements.push_back(movement(j,j+1));
+            }
+        }
+    }
+}
+
+/* BUBBLEDOBLE */
+template<class T>
+void MainWindow::DobleBubble(SimpleList<T> *arr, int end) //lista simple
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            {
+                arr->swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
+
+template<class T>
+void MainWindow::DobleBubble(DobleList<T> *arr, int end) //lista doble
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            {
+                arr->swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
+
+template<class T>
+void MainWindow::DobleBubble(DCList<T> *arr, int end) //lista doble circular
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            {
+                arr->swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
+
+template<class T>
+void MainWindow::DobleBubble(Stack<T> *arr, int end) //pila
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            {
+                arr->swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
+
+template<class T>
+void MainWindow::DobleBubble(Queue<T> *arr, int end) //cola
+{
+    bool permutation;
+    int en_cours = 0, sens = 1;
+    int debut = 1;
+    do
+    {
+        permutation = false;
+        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
+        {
+            en_cours += sens;
+            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            {
+                arr->swap(en_cours,en_cours-1);
+                movements.push_back(movement(en_cours,en_cours - 1));
+                permutation = true;
+            }
+        }
+        if (sens==1) end--; else debut++;
+        sens = -sens;
+    }
+    while (permutation);
+}
 
 /*METODO PARA LA OBTENCION ALEATORIA DE N PALABRAS (N = CANTIDAD)*/
 void MainWindow::buildWords(SimpleList<string> *arr, int cantidad)
@@ -1248,217 +1488,7 @@ void MainWindow::buildWords(SimpleList<string> *arr, int cantidad)
     }
 }
 
-template<class T>
-void MainWindow::BubbleSort(SimpleList<T> arr)
-{
-    int i,j,n;
-    n = arr.getSize();
-    for (i = 0; i< n-1; i++)
-    {
-        for(j = 0; j<n-i-1; j++)
-        {
-            if(arr[j]->getDato() > arr[j+1]->getDato())
-            {
-                arr.swap(j,j+1);
-                movements.push_back(movement(j,j+1));
-            }
-        }
-    }
-}
-
-template<class T>
-void MainWindow::BubbleSort(DobleList<T> arr)
-{
-    int i,j,n;
-    n = arr.getSize();
-    for (i = 0; i< n-1; i++)
-    {
-        for(j = 0; j<n-i-1; j++)
-        {
-            if(arr[j]->getDato() > arr[j+1]->getDato())
-            {
-                arr.swap(j,j+1);
-                movements.push_back(movement(j,j+1));
-            }
-        }
-    }
-}
-template<class T>
-void MainWindow::BubbleSort(DCList<T> arr)
-{
-    int i,j,n;
-    n = arr.getSize();
-    for (i = 0; i< n-1; i++)
-    {
-        for(j = 0; j<n-i-1; j++)
-        {
-            if(arr[j]->getDato() > arr[j+1]->getDato())
-            {
-                arr.swap(j,j+1);
-                movements.push_back(movement(j,j+1));
-            }
-        }
-    }
-}
-template<class T>
-void MainWindow::BubbleSort(Stack<T> arr)
-{
-    int i,j,n;
-    n = arr.getSize();
-    for (i = 0; i< n-1; i++)
-    {
-        for(j = 0; j<n-i-1; j++)
-        {
-            if(arr[j]->getDato() > arr[j+1]->getDato())
-            {
-                arr.swap(j,j+1);
-                movements.push_back(movement(j,j+1));
-            }
-        }
-    }
-}
-template<class T>
-void MainWindow::BubbleSort(Queue<T> arr)
-{
-    int i,j,n;
-    n = arr.getSize();
-    for (i = 0; i< n-1; i++)
-    {
-        for(j = 0; j<n-i-1; j++)
-        {
-            if(arr[j]->getDato() > arr[j+1]->getDato())
-            {
-                arr.swap(j,j+1);
-                movements.push_back(movement(j,j+1));
-            }
-        }
-    }
-}
-/* BUBBLEDOBLE */
-template<class T>
-void MainWindow::DobleBubble(SimpleList<T> &arr, int end)
-{
-    bool permutation;
-    int en_cours = 0, sens = 1;
-    int debut = 1;
-    do
-    {
-        permutation = false;
-        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
-        {
-            en_cours += sens;
-            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
-            {
-                arr.swap(en_cours,en_cours-1);
-                movements.push_back(movement(en_cours,en_cours - 1));
-                permutation = true;
-            }
-        }
-        if (sens==1) end--; else debut++;
-        sens = -sens;
-    }
-    while (permutation);
-}
-
-template<class T>
-void MainWindow::DobleBubble(DobleList<T> &arr, int end)
-{
-    bool permutation;
-    int en_cours = 0, sens = 1;
-    int debut = 1;
-    do
-    {
-        permutation = false;
-        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
-        {
-            en_cours += sens;
-            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
-            {
-                arr.swap(en_cours,en_cours-1);
-                movements.push_back(movement(en_cours,en_cours - 1));
-                permutation = true;
-            }
-        }
-        if (sens==1) end--; else debut++;
-        sens = -sens;
-    }
-    while (permutation);
-}
-
-template<class T>
-void MainWindow::DobleBubble(DCList<T> &arr, int end)
-{
-    bool permutation;
-    int en_cours = 0, sens = 1;
-    int debut = 1;
-    do
-    {
-        permutation = false;
-        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
-        {
-            en_cours += sens;
-            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
-            {
-                arr.swap(en_cours,en_cours-1);
-                movements.push_back(movement(en_cours,en_cours - 1));
-                permutation = true;
-            }
-        }
-        if (sens==1) end--; else debut++;
-        sens = -sens;
-    }
-    while (permutation);
-}
-
-template<class T>
-void MainWindow::DobleBubble(Stack<T> &arr, int end)
-{
-    bool permutation;
-    int en_cours = 0, sens = 1;
-    int debut = 1;
-    do
-    {
-        permutation = false;
-        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
-        {
-            en_cours += sens;
-            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
-            {
-                arr.swap(en_cours,en_cours-1);
-                movements.push_back(movement(en_cours,en_cours - 1));
-                permutation = true;
-            }
-        }
-        if (sens==1) end--; else debut++;
-        sens = -sens;
-    }
-    while (permutation);
-}
-
-template<class T>
-void MainWindow::DobleBubble(Queue<T> &arr, int end)
-{
-    bool permutation;
-    int en_cours = 0, sens = 1;
-    int debut = 1;
-    do
-    {
-        permutation = false;
-        while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
-        {
-            en_cours += sens;
-            if (arr[en_cours]->getDato() < arr[en_cours-1]->getDato())
-            {
-                arr.swap(en_cours,en_cours-1);
-                movements.push_back(movement(en_cours,en_cours - 1));
-                permutation = true;
-            }
-        }
-        if (sens==1) end--; else debut++;
-        sens = -sens;
-    }
-    while (permutation);
-}
+/*Metodo que saca una palabra aleatoriamente*/
 string MainWindow::buildWordsAux(int indice)
 {
     ifstream file("/home/retr0/Escritorio/Datos/ED_Progra_1/Primer_Proyecto_Programado/palabras.txt");
@@ -1471,4 +1501,14 @@ string MainWindow::buildWordsAux(int indice)
         j++;
     }
     return palabra;
+}
+
+void MainWindow::on_sbxRango1_valueChanged(int arg1)
+{
+    ui->sbxRango2->setMinimum(arg1+1);
+}
+
+void MainWindow::on_sbxRango2_valueChanged(int arg1)
+{
+    ui->sbxRango1->setMaximum(arg1-1);
 }

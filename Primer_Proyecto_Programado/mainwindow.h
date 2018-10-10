@@ -206,35 +206,35 @@ public:
 
     /* BUBBLESORT */
     template <class T>
-    void BubbleSort(SimpleList<T> arr);
+    void BubbleSort(SimpleList<T> *arr);
 
     template <class T>
-    void BubbleSort(DobleList<T> arr);
+    void BubbleSort(DobleList<T> *arr);
 
     template <class T>
-    void BubbleSort(DCList<T> arr);
+    void BubbleSort(DCList<T> *arr);
 
     template <class T>
-    void BubbleSort(Stack<T> arr);
+    void BubbleSort(Stack<T> *arr);
 
     template <class T>
-    void BubbleSort(Queue<T> arr);
+    void BubbleSort(Queue<T> *arr);
 
     /* BUBBLEDOBLE */
     template<class T>
-    void DobleBubble(SimpleList<T> &arr, int end);
+    void DobleBubble(SimpleList<T> *arr, int end);
 
     template<class T>
-    void DobleBubble(DobleList<T> &arr, int end);
+    void DobleBubble(DobleList<T> *arr, int end);
 
     template<class T>
-    void DobleBubble(DCList<T> &arr, int end);
+    void DobleBubble(DCList<T> *arr, int end);
 
     template<class T>
-    void DobleBubble(Stack<T> &arr, int end);
+    void DobleBubble(Stack<T> *arr, int end);
 
     template<class T>
-    void DobleBubble(Queue<T> &arr, int end);
+    void DobleBubble(Queue<T> *arr, int end);
 
 
     void buildWords(SimpleList<string> *arr, int cantidad);
@@ -244,9 +244,15 @@ public:
 
 private slots:
 
-    void on_btnRandonInt_clicked();
-
     void on_btnQuick_clicked();
+
+    void on_btnRandom_clicked();
+
+    void on_cbxDato_currentTextChanged(const QString &arg1);
+
+    void on_sbxRango1_valueChanged(int arg1);
+
+    void on_sbxRango2_valueChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
@@ -256,7 +262,9 @@ private:
     vector<QGraphicsTextItem*> texts;
     vector<QGraphicsLineItem*> lines;
     QGraphicsItemAnimation *animation;
+
     SimpleList<int> *list = new SimpleList<int>();
+
     vector<movement> movements;
 };
 
