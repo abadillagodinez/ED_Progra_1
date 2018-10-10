@@ -7,6 +7,7 @@
 #include "dclist.h"
 #include "stack.h"
 #include "queue.h"
+#include "animationstring.h"
 #include <QDialog>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -39,39 +40,53 @@ public:
     ~MainWindow();
     template<class T>
     void GenerateBoxes(SimpleList<T>* list);
+
+    template<class T>
+    void GenerateBoxes(DobleList<T>* list);
+
+    template<class T>
+    void GenerateBoxes(DCList<T>* list);
+
+    template<class T>
+    void GenerateBoxes(Stack<T>* list);
+
+    template<class T>
+    void GenerateBoxes(Queue<T>* list);
+
     void Swap(int pos1, int pos2);
+    void move();
 
     //firma de metodos de ordenamiento
     /*QUICK*/
     template<class T>
-    void QuickSort(SimpleList<T>* arr, int low, int high); //de lista simple
+    void QuickSort(SimpleList<T>& arr, int low, int high); //de lista simple
 
     template<class T>
-    int partition(SimpleList<T>* arr, int low, int high);
+    int partition(SimpleList<T>& arr, int low, int high);
 
     template<class T>
-    void QuickSort(DobleList<T>* arr, int low, int high); //de lista doble
+    void QuickSort(DobleList<T>& arr, int low, int high); //de lista doble
 
     template<class T>
-    int partition(DobleList<T>* arr, int low, int high);
+    int partition(DobleList<T>& arr, int low, int high);
 
     template<class T>
-    void QuickSort(DCList<T>* arr, int low, int high); //de lista doble circular
+    void QuickSort(DCList<T>& arr, int low, int high); //de lista doble circular
 
     template<class T>
-    int partition(DCList<T>* arr, int low, int high);
+    int partition(DCList<T>& arr, int low, int high);
 
     template<class T>
-    void QuickSort(Stack<T>* arr, int low, int high); //de pila
+    void QuickSort(Stack<T>& arr, int low, int high); //de pila
 
     template<class T>
-    int partition(Stack<T>* arr, int low, int high);
+    int partition(Stack<T>& arr, int low, int high);
 
     template<class T>
-    void QuickSort(Queue<T>* arr, int low, int high); //de pila
+    void QuickSort(Queue<T>& arr, int low, int high); //de pila
 
     template<class T>
-    int partition(Queue<T>* arr, int low, int high);
+    int partition(Queue<T>& arr, int low, int high);
 
     /*RADIX*/
     template <class T>
@@ -92,154 +107,151 @@ public:
     void MergeAnimation(int,int,int);
 
     template <class T>
-    void Merge(SimpleList<T> *arr, int leftIndx, int pivote, int rigthIndx);
+    void Merge(SimpleList<T> &arr, int leftIndx, int pivote, int rigthIndx);
 
     template <class T>
-    void MergeSort(SimpleList<T> *arr, int leftIndx, int rightIndx,int animationIndx);
+    void MergeSort(SimpleList<T> &arr, int leftIndx, int rightIndx);
 
     template <class T>
-    void Merge(DobleList<T> *arr, int leftIndx, int pivote, int rigthIndx);
+    void Merge(DobleList<T> &arr, int leftIndx, int pivote, int rigthIndx);
 
     template <class T>
-    void MergeSort(DobleList<T> *arr, int leftIndx, int rightIndx);
+    void MergeSort(DobleList<T> &arr, int leftIndx, int rightIndx);
 
     template <class T>
-    void Merge(DCList<T> *arr, int leftIndx, int pivote, int rigthIndx);
+    void Merge(DCList<T> &arr, int leftIndx, int pivote, int rigthIndx);
 
     template <class T>
-    void MergeSort(DCList<T> *arr, int leftIndx, int rightIndx);
+    void MergeSort(DCList<T> &arr, int leftIndx, int rightIndx);
 
     template <class T>
-    void Merge(Stack<T> *arr, int leftIndx, int pivote, int rigthIndx);
+    void Merge(Stack<T> &arr, int leftIndx, int pivote, int rigthIndx);
 
     template <class T>
-    void MergeSort(Stack<T> *arr, int leftIndx, int rightIndx);
+    void MergeSort(Stack<T> &arr, int leftIndx, int rightIndx);
 
     template <class T>
-    void Merge(Queue<T> *arr, int leftIndx, int pivote, int rigthIndx);
+    void Merge(Queue<T> &arr, int leftIndx, int pivote, int rigthIndx);
 
     template <class T>
-    void MergeSort(Queue<T> *arr, int leftIndx, int rightIndx);
+    void MergeSort(Queue<T> &arr, int leftIndx, int rightIndx);
 
     template <class T>
     Stack<T>* invertirPila(Stack<T> *arr);
 
     /*INSERTION*/
     template <class T>
-    void InsertionSort(SimpleList<T> *arr);
+    void InsertionSort(SimpleList<T> &arr);
 
     template <class T>
-    void InsertionSort(DobleList<T> *arr);
+    void InsertionSort(DobleList<T> &arr);
 
     template <class T>
-    void InsertionSort(DCList<T> *arr);
+    void InsertionSort(DCList<T> &arr);
 
     template <class T>
-    void InsertionSort(Stack<T> *arr);
+    void InsertionSort(Stack<T> &arr);
 
     template <class T>
-    void InsertionSort(Queue<T> *arr);
+    void InsertionSort(Queue<T> &arr);
 
     /*SELECTION*/
     template <class T>
-    void SelectionSort(SimpleList<T> *arr, int tamanio);
+    void SelectionSort(SimpleList<T> &arr, int tamanio);
 
     template <class T>
-    void SelectionSort(DobleList<T> *arr, int tamanio);
+    void SelectionSort(DobleList<T> &arr, int tamanio);
 
     template <class T>
-    void SelectionSort(DCList<T> *arr, int tamanio);
+    void SelectionSort(DCList<T> &arr, int tamanio);
 
     template <class T>
-    void SelectionSort(Stack<T> *arr, int tamanio);
+    void SelectionSort(Stack<T> &arr, int tamanio);
 
     template <class T>
-    void SelectionSort(Queue<T> *arr, int tamanio);
+    void SelectionSort(Queue<T> &arr, int tamanio);
 
     /*HEAPSORT*/
     template <class T>
-    void HeapSort(SimpleList<T> *arr);
+    void HeapSort(SimpleList<T> &arr);
 
     template <class T>
-    void HeapSortAux(SimpleList<T> *arr, int largo, int aTratar);
+    void HeapSortAux(SimpleList<T> &arr, int largo, int aTratar);
 
     template <class T>
-    void HeapSort(DobleList<T> *arr);
+    void HeapSort(DobleList<T> &arr);
 
     template <class T>
-    void HeapSortAux(DobleList<T> *arr, int largo, int aTratar);
+    void HeapSortAux(DobleList<T> &arr, int largo, int aTratar);
 
     template <class T>
-    void HeapSort(DCList<T> *arr);
+    void HeapSort(DCList<T> &arr);
 
     template <class T>
-    void HeapSortAux(DCList<T> *arr, int largo, int aTratar);
+    void HeapSortAux(DCList<T> &arr, int largo, int aTratar);
 
     template <class T>
-    void HeapSort(Stack<T> *arr);
+    void HeapSort(Stack<T> &arr);
 
     template <class T>
-    void HeapSortAux(Stack<T> *arr, int largo, int aTratar);
+    void HeapSortAux(Stack<T> &arr, int largo, int aTratar);
 
     template <class T>
-    void HeapSort(Queue<T> *arr);
+    void HeapSort(Queue<T> &arr);
 
     template <class T>
-    void HeapSortAux(Queue<T> *arr, int largo, int aTratar);
+    void HeapSortAux(Queue<T> &arr, int largo, int aTratar);
 
     /* SHELLSORT */
     template <class T>
-    void ShellSort(SimpleList<T> *arr, int tamano);
+    void ShellSort(SimpleList<T>&arr, int tamano);
 
     template <class T>
-    void ShellSort(DobleList<T> *arr, int tamano);
+    void ShellSort(DobleList<T> &arr, int tamano);
 
     template <class T>
-    void ShellSort(DCList<T> *arr, int tamano);
+    void ShellSort(DCList<T> &arr, int tamano);
 
     template <class T>
-    void ShellSort(Stack<T> *arr, int tamano);
+    void ShellSort(Stack<T> &arr, int tamano);
 
     template <class T>
-    void ShellSort(Queue<T> *arr, int tamano);
+    void ShellSort(Queue<T> &arr, int tamano);
 
 
     /* BUBBLESORT */
     template <class T>
-    void BubbleSort(SimpleList<T> *arr);
+    void BubbleSort(SimpleList<T> &arr);
 
     template <class T>
-    void BubbleSort(DobleList<T> *arr);
+    void BubbleSort(DobleList<T> &arr);
 
     template <class T>
-    void BubbleSort(DCList<T> *arr);
+    void BubbleSort(DCList<T> &arr);
 
     template <class T>
-    void BubbleSort(Stack<T> *arr);
+    void BubbleSort(Stack<T> &arr);
 
     template <class T>
-    void BubbleSort(Queue<T> *arr);
+    void BubbleSort(Queue<T> &arr);
 
     /* BUBBLEDOBLE */
     template<class T>
     void DobleBubble(SimpleList<T> &arr, int end);
 
     template<class T>
-    void DobleBubble(DobleList<T> *arr, int end);
+    void DobleBubble(DobleList<T> &arr, int end);
 
     template<class T>
-    void DobleBubble(DCList<T> *arr, int end);
+    void DobleBubble(DCList<T> &arr, int end);
 
     template<class T>
-    void DobleBubble(Stack<T> *arr, int end);
+    void DobleBubble(Stack<T> &arr, int end);
 
     template<class T>
-    void DobleBubble(Queue<T> *arr, int end);
+    void DobleBubble(Queue<T> &arr, int end);
 
-
-    void buildWords(SimpleList<string> *arr, int cantidad);
-    string buildWordsAux(int indice);
-
+    string buildWord(int indice);
 
 
 private slots:
@@ -253,6 +265,20 @@ private slots:
     void on_sbxRango1_valueChanged(int arg1);
 
     void on_sbxRango2_valueChanged(int arg1);
+
+    void on_btnShell_clicked();
+
+    void on_btnInsertion_clicked();
+
+    void on_btnMerge_clicked();
+
+    void on_btnSeletion_clicked();
+
+    void on_btnDobleBubble_clicked();
+
+    void on_btnHeap_clicked();
+
+    void on_btnBubble_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -290,6 +316,7 @@ private:
     //Queue<obj> *objQueue = new Queue<obj>();
 
     vector<movement> movements;
+    vector<movement> movementsDone;
 };
 
 #endif // MAINWINDOW_H

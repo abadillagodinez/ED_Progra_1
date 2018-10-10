@@ -17,6 +17,10 @@ class DobleNode
         DobleNode* getPrev();
         void setNext(DobleNode* pNext);
         void setPrev(DobleNode* pPrev);
+
+        bool operator< (DobleNode<tData> newdato);
+        bool operator> (DobleNode<tData> newdato);
+        bool operator == (DobleNode<tData> newdato);
     protected:
 };
 
@@ -74,6 +78,34 @@ template <typename tData>
 void DobleNode<tData>::setPrev(DobleNode* pPrev)
 {
     prev = pPrev;
+}
+
+template <typename tData>
+bool DobleNode<tData>::operator<(DobleNode<tData> newdato)
+{
+    /* MODIFIBLE FUNCTION TO COMPARE OBJECTS USING TUPLES
+     * YOU SHOULD DO STD::TIE(DATAMEMBERS) THEN STD::TIE(NEWDATAMEMEBERS)
+     * AND FINALLY COMPARE THE TWO OBJECTS */
+    return std::tie(dato) < std::tie(newdato.dato);
+}
+
+template <typename tData>
+bool DobleNode<tData>::operator>(DobleNode<tData> newdato)
+{
+    /* MODIFIBLE FUNCTION TO COMPARE OBJECTS USING TUPLES
+     * YOU SHOULD DO STD::TIE(DATAMEMBERS) THEN STD::TIE(NEWDATAMEMEBERS)
+     * AND FINALLY COMPARE THE TWO OBJECTS */
+    return std::tie(dato) > std::tie(newdato.dato);
+}
+
+
+template <typename tData>
+bool DobleNode<tData>::operator ==(DobleNode<tData> newdato)
+{
+    /* MODIFIBLE FUNCTION TO COMPARE OBJECTS USING TUPLES
+     * YOU SHOULD DO STD::TIE(DATAMEMBERS) THEN STD::TIE(NEWDATAMEMEBERS)
+     * AND FINALLY COMPARE THE TWO OBJECTS */
+    return std::tie(dato) == std::tie(newdato.dato);
 }
 
 #endif

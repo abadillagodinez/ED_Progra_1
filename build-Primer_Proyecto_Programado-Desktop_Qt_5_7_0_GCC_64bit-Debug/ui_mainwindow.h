@@ -47,6 +47,15 @@ public:
     QSpinBox *sbxRango2;
     QRadioButton *rbtnAdelante;
     QRadioButton *rbtnAtras;
+    QPushButton *btnBubble;
+    QPushButton *btnSeletion;
+    QPushButton *btnDobleBubble;
+    QPushButton *btnInsertion;
+    QPushButton *btnShell;
+    QPushButton *btnHeap;
+    QPushButton *btnMerge;
+    QPushButton *btnBin;
+    QPushButton *btnRadix;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -55,21 +64,23 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1126, 516);
+        MainWindow->resize(992, 516);
+        MainWindow->setMinimumSize(QSize(992, 516));
+        MainWindow->setMaximumSize(QSize(992, 516));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         graphicsView = new QGraphicsView(centralWidget);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(60, 200, 931, 231));
+        graphicsView->setGeometry(QRect(30, 210, 931, 231));
         rbtnPausar = new QRadioButton(centralWidget);
         rbtnPausar->setObjectName(QStringLiteral("rbtnPausar"));
         rbtnPausar->setGeometry(QRect(710, 40, 82, 17));
         btnRandom = new QPushButton(centralWidget);
         btnRandom->setObjectName(QStringLiteral("btnRandom"));
-        btnRandom->setGeometry(QRect(310, 10, 111, 23));
+        btnRandom->setGeometry(QRect(30, 170, 231, 23));
         btnQuick = new QPushButton(centralWidget);
         btnQuick->setObjectName(QStringLiteral("btnQuick"));
-        btnQuick->setGeometry(QRect(590, 10, 75, 23));
+        btnQuick->setGeometry(QRect(320, 10, 91, 23));
         cbxEstructura = new QComboBox(centralWidget);
         cbxEstructura->setObjectName(QStringLiteral("cbxEstructura"));
         cbxEstructura->setGeometry(QRect(110, 10, 151, 23));
@@ -112,10 +123,37 @@ public:
         rbtnAtras = new QRadioButton(centralWidget);
         rbtnAtras->setObjectName(QStringLiteral("rbtnAtras"));
         rbtnAtras->setGeometry(QRect(710, 70, 100, 21));
+        btnBubble = new QPushButton(centralWidget);
+        btnBubble->setObjectName(QStringLiteral("btnBubble"));
+        btnBubble->setGeometry(QRect(429, 10, 91, 23));
+        btnSeletion = new QPushButton(centralWidget);
+        btnSeletion->setObjectName(QStringLiteral("btnSeletion"));
+        btnSeletion->setGeometry(QRect(320, 50, 91, 23));
+        btnDobleBubble = new QPushButton(centralWidget);
+        btnDobleBubble->setObjectName(QStringLiteral("btnDobleBubble"));
+        btnDobleBubble->setGeometry(QRect(430, 50, 91, 23));
+        btnInsertion = new QPushButton(centralWidget);
+        btnInsertion->setObjectName(QStringLiteral("btnInsertion"));
+        btnInsertion->setGeometry(QRect(320, 90, 91, 23));
+        btnShell = new QPushButton(centralWidget);
+        btnShell->setObjectName(QStringLiteral("btnShell"));
+        btnShell->setGeometry(QRect(430, 90, 91, 23));
+        btnHeap = new QPushButton(centralWidget);
+        btnHeap->setObjectName(QStringLiteral("btnHeap"));
+        btnHeap->setGeometry(QRect(320, 130, 91, 23));
+        btnMerge = new QPushButton(centralWidget);
+        btnMerge->setObjectName(QStringLiteral("btnMerge"));
+        btnMerge->setGeometry(QRect(430, 130, 91, 23));
+        btnBin = new QPushButton(centralWidget);
+        btnBin->setObjectName(QStringLiteral("btnBin"));
+        btnBin->setGeometry(QRect(320, 170, 91, 23));
+        btnRadix = new QPushButton(centralWidget);
+        btnRadix->setObjectName(QStringLiteral("btnRadix"));
+        btnRadix->setGeometry(QRect(430, 170, 91, 23));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1126, 20));
+        menuBar->setGeometry(QRect(0, 0, 992, 20));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -137,7 +175,7 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         rbtnPausar->setText(QApplication::translate("MainWindow", "Pausar", 0));
         btnRandom->setText(QApplication::translate("MainWindow", "Random", 0));
-        btnQuick->setText(QApplication::translate("MainWindow", "QuickSort", 0));
+        btnQuick->setText(QApplication::translate("MainWindow", "Quick Sort", 0));
         cbxEstructura->clear();
         cbxEstructura->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "Lista Simple", 0)
@@ -160,6 +198,15 @@ public:
         lblRango->setText(QApplication::translate("MainWindow", "Rango:", 0));
         rbtnAdelante->setText(QApplication::translate("MainWindow", "Adelante", 0));
         rbtnAtras->setText(QApplication::translate("MainWindow", "Atr\303\241s", 0));
+        btnBubble->setText(QApplication::translate("MainWindow", "Bubble Sort", 0));
+        btnSeletion->setText(QApplication::translate("MainWindow", "Selection Sort", 0));
+        btnDobleBubble->setText(QApplication::translate("MainWindow", "Doble Bubble", 0));
+        btnInsertion->setText(QApplication::translate("MainWindow", "Insertion Sort", 0));
+        btnShell->setText(QApplication::translate("MainWindow", "Shell Sort", 0));
+        btnHeap->setText(QApplication::translate("MainWindow", "Heap Sort", 0));
+        btnMerge->setText(QApplication::translate("MainWindow", "Merge Sort", 0));
+        btnBin->setText(QApplication::translate("MainWindow", "Bin Sort", 0));
+        btnRadix->setText(QApplication::translate("MainWindow", "Radix Sort", 0));
     } // retranslateUi
 
 };

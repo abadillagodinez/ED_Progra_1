@@ -29,7 +29,9 @@ void MainWindow::GenerateBoxes(SimpleList<T>* list)
     int size = list->getSize();
     for(int i = 0; i< size; i++)
     {
-        std::string str = std::to_string(list->getPos(i)->getDato());
+        string str;
+        AnimationString temp(list->getPos(i)->getDato());
+        str = temp.getString();
         QString qstr = QString::fromStdString(str);
         text = scene->addText(qstr, QFont("Arial",12));
         text->setPos(QPointF(i*50,-30));
@@ -37,7 +39,90 @@ void MainWindow::GenerateBoxes(SimpleList<T>* list)
         QGraphicsLineItem *line = scene->addLine(i*50,0,i*50 + 40,0,Qt::SolidLine);
         line->setPen(QPen(Qt::red));
     }
+}
 
+template <typename T>
+void MainWindow::GenerateBoxes(DobleList<T>* list)
+{
+    QBrush redBrush(Qt::white);
+    QPen outlinePen(Qt::black);
+    outlinePen.setWidth(2);
+    int size = list->getSize();
+    for(int i = 0; i< size; i++)
+    {
+        string str;
+        AnimationString temp(list->getPos(i)->getDato());
+        str = temp.getString();
+        QString qstr = QString::fromStdString(str);
+        text = scene->addText(qstr, QFont("Arial",12));
+        text->setPos(QPointF(i*50,-30));
+        texts.push_back(text);
+        QGraphicsLineItem *line = scene->addLine(i*50,0,i*50 + 40,0,Qt::SolidLine);
+        line->setPen(QPen(Qt::red));
+    }
+}
+
+template <typename T>
+void MainWindow::GenerateBoxes(DCList<T>* list)
+{
+    QBrush redBrush(Qt::white);
+    QPen outlinePen(Qt::black);
+    outlinePen.setWidth(2);
+    int size = list->getSize();
+    for(int i = 0; i< size; i++)
+    {
+        string str;
+        AnimationString temp(list->getPos(i)->getDato());
+        str = temp.getString();
+        QString qstr = QString::fromStdString(str);
+        text = scene->addText(qstr, QFont("Arial",12));
+        text->setPos(QPointF(i*50,-30));
+        texts.push_back(text);
+        QGraphicsLineItem *line = scene->addLine(i*50,0,i*50 + 40,0,Qt::SolidLine);
+        line->setPen(QPen(Qt::red));
+    }
+}
+
+template <typename T>
+void MainWindow::GenerateBoxes(Stack<T>* list)
+{
+    QBrush redBrush(Qt::white);
+    QPen outlinePen(Qt::black);
+    outlinePen.setWidth(2);
+    int size = list->getSize();
+    for(int i = 0; i< size; i++)
+    {
+        string str;
+        AnimationString temp(list->getPos(i)->getDato());
+        str = temp.getString();
+        QString qstr = QString::fromStdString(str);
+        text = scene->addText(qstr, QFont("Arial",12));
+        text->setPos(QPointF(i*50,-30));
+        texts.push_back(text);
+        QGraphicsLineItem *line = scene->addLine(i*50,0,i*50 + 40,0,Qt::SolidLine);
+        line->setPen(QPen(Qt::red));
+    }
+}
+
+template <typename T>
+void MainWindow::GenerateBoxes(Queue<T>* list)
+{
+    QBrush redBrush(Qt::white);
+    QPen outlinePen(Qt::black);
+    outlinePen.setWidth(2);
+    int size = list->getSize();
+    for(int i = 0; i< size; i++)
+    {
+        string str;
+        AnimationString temp(list->getPos(i)->getDato());
+        str = temp.getString();
+        QString qstr = QString::fromStdString(str);
+        text = scene->addText(qstr, QFont("Arial",12));
+        text->setPos(QPointF(i*50,-30));
+        texts.push_back(text);
+        QGraphicsLineItem *line = scene->addLine(i*50,0,i*50 + 40,0,Qt::SolidLine);
+        line->setPen(QPen(Qt::red));
+    }
 }
 
 void MainWindow::Swap(int pos1, int pos2)
@@ -73,6 +158,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_btnRandom_clicked()
 {
     srand(time(NULL));
+    texts.clear();
+    lines.clear();
     if(ui->cbxEstructura->currentText() == "Lista Simple")
     {
         if(ui->cbxDato->currentText() == "Enteros")
@@ -88,22 +175,1037 @@ void MainWindow::on_btnRandom_clicked()
                 valor = rand() % ((sup - inf) + 1) + inf;
                 intSimpList->insertAtHead(valor);
             }
-            scene->clear();;
+            scene->clear();
             GenerateBoxes(intSimpList);
         }/*if de enteros*/
+
         else if(ui->cbxDato->currentText() == "Letras")
         {
+            delete charSimpList;
+            charSimpList = new SimpleList<char>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = 122;
+            int inf = 97;
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                charSimpList->insertAtHead(valor);
+            }
+            scene->clear();
+            charSimpList->print();
+            GenerateBoxes(charSimpList);
+        }/*else if de letras*/
 
+        else if(ui->cbxDato->currentText() == "Palabras")
+        {
+            delete strSimpList;
+            strSimpList = new SimpleList<string>();
+            int cantidad = ui->sbxCantidad->value();
+            for(int i = 0; i < cantidad; i++)
+            {
+                int indice = rand() % 1000 + 1;
+                strSimpList->insertAtTail(buildWord(indice));
+            }
+            scene->clear();
+            strSimpList->print();
+            GenerateBoxes(strSimpList);
+        }/*else if de palabras*/
+
+        else if(ui->cbxDato->currentText() == "Otros")
+        {
+            //CODIGO DE SOBRECARGA DE METODOS
         }
+
     }/*if de lista simple*/
+
+    else if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            delete intDobList;
+            intDobList = new DobleList<int>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = ui->sbxRango2->value();
+            int inf = ui->sbxRango1->value();
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                intDobList->insertAtHead(valor);
+            }
+            scene->clear();
+            GenerateBoxes(intDobList);
+        }/*if de enteros*/
+
+        else if(ui->cbxDato->currentText() == "Letras")
+        {
+            delete charDobList;
+            charDobList = new DobleList<char>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = 122;
+            int inf = 97;
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                charDobList->insertAtHead(valor);
+            }
+            scene->clear();
+            charDobList->print();
+            //GenerateBoxes(charDobList);
+        }/*else if de letras*/
+
+        else if(ui->cbxDato->currentText() == "Palabras")
+        {
+            delete strDoblList;
+            strDoblList = new DobleList<string>();
+            int cantidad = ui->sbxCantidad->value();
+            for(int i = 0; i < cantidad; i++)
+            {
+                int indice = rand() % 1000 + 1;
+                strDoblList->insertAtTail(buildWord(indice));
+            }
+            scene->clear();
+            strDoblList->print();
+            GenerateBoxes(strDoblList);
+        }/*else if de palabras*/
+
+        else if(ui->cbxDato->currentText() == "Otros")
+        {
+            //CODIGO DE SOBRECARGA DE METODOS
+        }
+    }/*if lista doble*/
+
+    else if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            delete intDClist;
+            intDClist = new DCList<int>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = ui->sbxRango2->value();
+            int inf = ui->sbxRango1->value();
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                intDClist->insertAtHead(valor);
+            }
+            scene->clear();
+            intDClist->print();
+            GenerateBoxes(intDClist);
+        }/*if de enteros*/
+
+        else if(ui->cbxDato->currentText() == "Letras")
+        {
+            delete charDCList;
+            charDCList = new DCList<char>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = 122;
+            int inf = 97;
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                charDCList->insertAtHead(valor);
+            }
+            scene->clear();
+            charDCList->print();
+            GenerateBoxes(charDCList);
+        }/*else if de letras*/
+
+        else if(ui->cbxDato->currentText() == "Palabras")
+        {
+            delete strDCList;
+            strDCList = new DCList<string>();
+            int cantidad = ui->sbxCantidad->value();
+            for(int i = 0; i < cantidad; i++)
+            {
+                int indice = rand() % 1000 + 1;
+                strDCList->insertAtTail(buildWord(indice));
+            }
+            scene->clear();
+            strDCList->print();
+            GenerateBoxes(strDCList);
+        }/*else if de palabras*/
+
+        else if(ui->cbxDato->currentText() == "Otros")
+        {
+            //CODIGO DE SOBRECARGA DE METODOS
+        }
+    }/*else if de lista doble circular*/
+
+    else if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            delete intStack;
+            intStack = new Stack<int>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = ui->sbxRango2->value();
+            int inf = ui->sbxRango1->value();
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                intStack->push(valor);
+            }
+            scene->clear();
+            intStack->print();
+            GenerateBoxes(intStack);
+        }/*if de enteros*/
+
+        else if(ui->cbxDato->currentText() == "Letras")
+        {
+            delete charStack;
+            charStack = new Stack<char>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = 122;
+            int inf = 97;
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                charStack->push(valor);
+            }
+            scene->clear();
+            charStack->print();
+            GenerateBoxes(charStack);
+        }/*else if de letras*/
+
+        else if(ui->cbxDato->currentText() == "Palabras")
+        {
+            delete strStack;
+            strStack = new Stack<string>();
+            int cantidad = ui->sbxCantidad->value();
+            for(int i = 0; i < cantidad; i++)
+            {
+                int indice = rand() % 1000 + 1;
+                strStack->push(buildWord(indice));
+            }
+            scene->clear();
+            strStack->print();
+            GenerateBoxes(strStack);
+        }/*else if de palabras*/
+
+        else if(ui->cbxDato->currentText() == "Otros")
+        {
+            //CODIGO DE SOBRECARGA DE METODOS
+        }
+    } /*else if de la pila*/
+
+    else if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            delete intQueue;
+            intQueue = new Queue<int>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = ui->sbxRango2->value();
+            int inf = ui->sbxRango1->value();
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                intQueue->enqueue(valor);
+            }
+            scene->clear();
+            intQueue->print();
+            GenerateBoxes(intQueue);
+        }/*if de enteros*/
+
+        else if(ui->cbxDato->currentText() == "Letras")
+        {
+            delete charQueue;
+            charQueue = new Queue<char>();
+            int cantidad = ui->sbxCantidad->value();
+            int valor;
+            int sup = 122;
+            int inf = 97;
+            for(int i = 0; i<cantidad;i++)
+            {
+                valor = rand() % ((sup - inf) + 1) + inf;
+                charQueue->enqueue(valor);
+            }
+            scene->clear();
+            charQueue->print();
+            GenerateBoxes(charQueue);
+        }/*else if de letras*/
+
+        else if(ui->cbxDato->currentText() == "Palabras")
+        {
+            delete strQueue;
+            strQueue = new Queue<string>();
+            int cantidad = ui->sbxCantidad->value();
+            for(int i = 0; i < cantidad; i++)
+            {
+                int indice = rand() % 1000 + 1;
+                strQueue->enqueue(buildWord(indice));
+            }
+            scene->clear();
+            strQueue->print();
+            GenerateBoxes(strQueue);
+        }/*else if de palabras*/
+
+        else if(ui->cbxDato->currentText() == "Otros")
+        {
+            //CODIGO DE SOBRECARGA DE METODOS
+        }
+    } /*else if de la cola*/
 }
 
-void MainWindow::on_btnQuick_clicked()
+
+void MainWindow::on_btnQuick_clicked()//QUICK SORT
 {
-    intSimpList->print();
-    DobleBubble(*intSimpList, intSimpList->getSize()-1);
-    //Swap(1,2);
-    intSimpList->print();
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            QuickSort(*intSimpList, 0,intSimpList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            QuickSort(*charSimpList, 0, charSimpList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            QuickSort(*strSimpList, 0, strSimpList->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            QuickSort(*intDobList, 0,intDobList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            QuickSort(*charDobList, 0, charDobList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            QuickSort(*strDoblList, 0, strDoblList->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            QuickSort(*intDClist, 0,intDClist->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            QuickSort(*charDCList, 0, charDCList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            QuickSort(*strDCList, 0, strDCList->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            QuickSort(*intStack, 0,intStack->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            QuickSort(*charStack, 0, charStack->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            QuickSort(*strStack, 0, strStack->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            QuickSort(*intQueue, 0,intQueue->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            QuickSort(*charQueue, 0, charQueue->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            QuickSort(*strQueue, 0, strQueue->getSize()-1);
+            move();
+        }
+    }
+}
+
+void MainWindow::on_btnShell_clicked()//SHELL SORT
+{
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            ShellSort(*intSimpList, intSimpList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            ShellSort(*charSimpList, charSimpList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            ShellSort(*strSimpList, strSimpList->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            ShellSort(*intDobList, intDobList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            ShellSort(*charDobList, charDobList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            ShellSort(*strDoblList, strDoblList->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            ShellSort(*intDClist, intDClist->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            ShellSort(*charDCList, charDCList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            ShellSort(*strDCList, strDCList->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            ShellSort(*intStack, intStack->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            ShellSort(*charStack, charStack->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            ShellSort(*strStack, strStack->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            ShellSort(*intQueue, intQueue->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            ShellSort(*charQueue, charQueue->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            ShellSort(*strQueue, strQueue->getSize());
+            move();
+        }
+    }
+}
+
+void MainWindow::on_btnInsertion_clicked()//INSERTION SORT
+{
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            InsertionSort(*intSimpList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            InsertionSort(*charSimpList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            InsertionSort(*strSimpList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            InsertionSort(*intDobList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            InsertionSort(*charDobList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            InsertionSort(*strDoblList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            InsertionSort(*intDClist);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            InsertionSort(*charDCList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            InsertionSort(*strDCList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            InsertionSort(*intStack);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            InsertionSort(*charStack);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            InsertionSort(*strStack);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            InsertionSort(*intQueue);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            InsertionSort(*charQueue);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            InsertionSort(*strQueue);
+            move();
+        }
+    }
+}
+
+void MainWindow::on_btnMerge_clicked()//MERGE SORT
+{
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            MergeSort(*intSimpList, 0,intSimpList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+           MergeSort(*charSimpList, 0, charSimpList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+           MergeSort(*strSimpList, 0, strSimpList->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            MergeSort(*intDobList, 0,intDobList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            MergeSort(*charDobList, 0, charDobList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            MergeSort(*strDoblList, 0, strDoblList->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            MergeSort(*intDClist, 0,intDClist->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            MergeSort(*charDCList, 0, charDCList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            MergeSort(*strDCList, 0, strDCList->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            MergeSort(*intStack, 0,intStack->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            MergeSort(*charStack, 0, charStack->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            MergeSort(*strStack, 0, strStack->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            MergeSort(*intQueue, 0,intQueue->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            MergeSort(*charQueue, 0, charQueue->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            MergeSort(*strQueue, 0, strQueue->getSize()-1);
+            move();
+        }
+    }
+}
+
+void MainWindow::on_btnSeletion_clicked()//SELECTION SORT
+{
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            SelectionSort(*intSimpList, intSimpList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            SelectionSort(*charSimpList, charSimpList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            SelectionSort(*strSimpList, strSimpList->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            SelectionSort(*intDobList, intDobList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            SelectionSort(*charDobList, charDobList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            SelectionSort(*strDoblList, strDoblList->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            SelectionSort(*intDClist, intDClist->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            SelectionSort(*charDCList, charDCList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            SelectionSort(*strDCList, strDCList->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            SelectionSort(*intStack, intStack->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            SelectionSort(*charStack, charStack->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            SelectionSort(*strStack, strStack->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            SelectionSort(*intQueue, intQueue->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            SelectionSort(*charQueue, charQueue->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            SelectionSort(*strQueue, strQueue->getSize());
+            move();
+        }
+    }
+}
+
+void MainWindow::on_btnDobleBubble_clicked()//BUBBLE BIDIRECCIONAL
+{
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            DobleBubble(*intSimpList, intSimpList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            DobleBubble(*charSimpList, charSimpList->getSize());
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            DobleBubble(*strSimpList, strSimpList->getSize());
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            DobleBubble(*intDobList, intDobList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            DobleBubble(*charDobList, charDobList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            DobleBubble(*strDoblList, strDoblList->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            DobleBubble(*intDClist, intDClist->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            DobleBubble(*charDCList, charDCList->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            DobleBubble(*strDCList, strDCList->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            DobleBubble(*intStack, intStack->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            DobleBubble(*charStack, charStack->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            DobleBubble(*strStack, strStack->getSize()-1);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            DobleBubble(*intQueue, intQueue->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            DobleBubble(*charQueue, charQueue->getSize()-1);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            DobleBubble(*strQueue, strQueue->getSize()-1);
+            move();
+        }
+    }
+}
+
+void MainWindow::on_btnHeap_clicked()//HEAPSORT BUTTON
+{
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            HeapSort(*intSimpList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            HeapSort(*charSimpList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            HeapSort(*strSimpList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            HeapSort(*intDobList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            HeapSort(*charDobList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            HeapSort(*strDoblList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            HeapSort(*intDClist);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            HeapSort(*charDCList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            HeapSort(*strDCList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            HeapSort(*intStack);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            HeapSort(*charStack);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            HeapSort(*strStack);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            HeapSort(*intQueue);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            HeapSort(*charQueue);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            HeapSort(*strQueue);
+            move();
+        }
+    }
+}
+
+void MainWindow::on_btnBubble_clicked()
+{
+    if(ui->cbxEstructura->currentText() == "Lista Simple")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            BubbleSort(*intSimpList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            BubbleSort(*charSimpList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            BubbleSort(*strSimpList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            BubbleSort(*intDobList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            BubbleSort(*charDobList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            BubbleSort(*strDoblList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Lista Doble Circular")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            BubbleSort(*intDClist);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            BubbleSort(*charDCList);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            BubbleSort(*strDCList);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Pila")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            BubbleSort(*intStack);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            BubbleSort(*charStack);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            BubbleSort(*strStack);
+            move();
+        }
+    }
+    if(ui->cbxEstructura->currentText() == "Cola")
+    {
+        if(ui->cbxDato->currentText() == "Enteros")
+        {
+            BubbleSort(*intQueue);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Letras")
+        {
+            BubbleSort(*charQueue);
+            move();
+        }
+        if(ui->cbxDato->currentText() == "Palabras")
+        {
+            BubbleSort(*strQueue);
+            move();
+        }
+    }
 }
 
 void MainWindow::on_cbxDato_currentTextChanged(const QString &arg1)
@@ -133,6 +1235,34 @@ void MainWindow::on_cbxDato_currentTextChanged(const QString &arg1)
     }
 }
 
+void MainWindow::move()
+{
+    std::size_t i = 0;
+    vector<movement>::iterator it = movements.begin();
+    if(ui->rbtnAdelante->isChecked())
+        {
+            if(!movements.empty())
+            {
+                movement n = movements[i];
+                movementsDone.push_back(n);
+                movements.erase(it);
+                Swap(n.getX(),n.getY());
+                move();
+            }
+        }
+        if(ui->rbtnAtras->isChecked())
+        {
+            if(!movementsDone.empty())
+            {
+                i = movementsDone.size()-1;
+                movement n = movementsDone[i];
+                movements.insert(it,n);
+                movementsDone.pop_back();
+                Swap(n.getX(),n.getY());
+                move();
+            }
+        }
+}
 
 
 /* ALGORITMOS DE ORDENAMIENTO */
@@ -140,102 +1270,107 @@ void MainWindow::on_cbxDato_currentTextChanged(const QString &arg1)
 
 /* INSERTION SORT */
 template <class T>
-void MainWindow::InsertionSort(SimpleList<T> *arr) //sobrecarga para la lista doble
+void MainWindow::InsertionSort(SimpleList<T> &arr) //sobrecarga para la lista doble
 {
     int i, j;
-    T actual;
-    for (i = 1; i < arr->getSize(); i++)
+    SimpleNode<T> actual =*arr.getPos(1);
+    for (i = 1; i < arr.getSize(); i++)
     {
-        actual = arr->getPos(i)->getDato();
-        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        SimpleNode<T> temp = *arr.getPos(1);
+        actual = *arr.getPos(i);
+        for (j = i; j > 0 && (temp = *arr.getPos(j-1)) > actual; j--)
         {
-            SimpleNode<T> *actualNode = arr->getPos(j);
-            SimpleNode<T> *prevNode = arr->getPos(j-1);
+            SimpleNode<T> *actualNode = arr.getPos(j);
+            SimpleNode<T> *prevNode = arr.getPos(j-1);
             actualNode->setDato(prevNode->getDato());
-            movements.push_back(movement(j+1,j));
+            movements.push_back(movement(j-1,j));
         }
-        arr->getPos(j)->setDato(actual);
-        movements.push_back(movement(j+1,i));
+        arr.getPos(j)->setDato(actual.dato);
+        movements.push_back(movement(j,i));
     }
 }
 
 template <class T>
-void MainWindow::InsertionSort(DobleList<T> *arr) //sobrecarga para la lista doble
+void MainWindow::InsertionSort(DobleList<T> &arr) //sobrecarga para la lista doble
 {
     int i, j;
-    T actual;
-    for (i = 1; i < arr->getSize(); i++)
+    DobleNode<T> actual =*arr.getPos(0);
+    for (i = 1; i < arr.getSize(); i++)
     {
-        actual = arr->getPos(i)->getDato();
-        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        DobleNode<T> temp = *arr.getPos(0);
+        actual = *arr.getPos(i);
+        for (j = i; j > 0 && (temp = *arr.getPos(j-1)) > actual; j--)
         {
-            DobleNode<T> *actualNode = arr->getPos(j);
-            DobleNode<T> *prevNode = arr->getPos(j-1);
+            DobleNode<T> *actualNode = arr.getPos(j);
+            DobleNode<T> *prevNode = arr.getPos(j-1);
             actualNode->setDato(prevNode->getDato());
-            movements.push_back(movement(j+1,j));
+            movements.push_back(movement(j-1,j));
         }
-        arr->getPos(j)->setDato(actual);
-        movements.push_back(movement(j+1,i));
+        arr.getPos(j)->setDato(actual.getDato());
+        movements.push_back(movement(j,i));
     }
 }
 
 template <class T>
-void MainWindow::InsertionSort(DCList<T> *arr) //sobrecarga para la lista circular
+void MainWindow::InsertionSort(DCList<T> &arr) //sobrecarga para la lista doble
 {
     int i, j;
-    T actual;
-    for (i = 1; i < arr->getSize(); i++)
+    DobleNode<T> actual =*arr.getPos(0);
+    for (i = 1; i < arr.getSize(); i++)
     {
-        actual = arr->getPos(i)->getDato();
-        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        DobleNode<T> temp = *arr.getPos(0);
+        actual = *arr.getPos(i);
+        for (j = i; j > 0 && (temp = *arr.getPos(j-1)) > actual; j--)
         {
-            DobleNode<T> *actualNode = arr->getPos(j);
-            DobleNode<T> *prevNode = arr->getPos(j-1);
+            DobleNode<T> *actualNode = arr.getPos(j);
+            DobleNode<T> *prevNode = arr.getPos(j-1);
             actualNode->setDato(prevNode->getDato());
-            movements.push_back(movement(j+1,j));
+            movements.push_back(movement(j-1,j));
         }
-        arr->getPos(j)->setDato(actual);
-        movements.push_back(movement(j+1,i));
+        arr.getPos(j)->setDato(actual.getDato());
+        movements.push_back(movement(j,i));
     }
 }
 
 template <class T>
-void MainWindow::InsertionSort(Stack<T> *arr) //sobrecarga para la pila
+void MainWindow::InsertionSort(Stack<T> &arr) //sobrecarga para la lista doble
 {
     int i, j;
-    T actual;
-    for (i = 1; i < arr->getSize(); i++)
+    SimpleNode<T> actual =*arr.getPos(0);
+    for (i = 1; i < arr.getSize(); i++)
     {
-        actual = arr->getPos(i)->getDato();
-        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        SimpleNode<T> temp = *arr.getPos(0);
+        actual = *arr.getPos(i);
+        for (j = i; j > 0 && (temp = *arr.getPos(j-1)) > actual; j--)
         {
-            SimpleNode<T> *actualNode = arr->getPos(j);
-            SimpleNode<T> *prevNode = arr->getPos(j-1);
+            SimpleNode<T> *actualNode = arr.getPos(j);
+            SimpleNode<T> *prevNode = arr.getPos(j-1);
             actualNode->setDato(prevNode->getDato());
-            movements.push_back(movement(j+1,j));
+            movements.push_back(movement(j-1,j));
         }
-        arr->getPos(j)->setDato(actual);
-        movements.push_back(movement(j+1,i));
+        arr.getPos(j)->setDato(actual.dato);
+        movements.push_back(movement(j,i));
     }
 }
 
 template <class T>
-void MainWindow::InsertionSort(Queue<T> *arr) //sobrecarga para la cola
+void MainWindow::InsertionSort(Queue<T> &arr) //sobrecarga para la lista doble
 {
     int i, j;
-    T actual;
-    for (i = 1; i < arr->getSize(); i++)
+    SimpleNode<T> actual =*arr.getPos(0);
+    for (i = 1; i < arr.getSize(); i++)
     {
-        actual = arr->getPos(i)->getDato();
-        for (j = i; j > 0 && arr->getPos(j-1)->getDato() > actual; j--)
+        SimpleNode<T> temp = *arr.getPos(0);
+        actual = *arr.getPos(i);
+        for (j = i; j > 0 && (temp = *arr.getPos(j-1)) > actual; j--)
         {
-            SimpleNode<T> *actualNode = arr->getPos(j);
-            SimpleNode<T> *prevNode = arr->getPos(j-1);
+            SimpleNode<T> *actualNode = arr.getPos(j);
+            SimpleNode<T> *prevNode = arr.getPos(j-1);
             actualNode->setDato(prevNode->getDato());
-            movements.push_back(movement(j+1,j));
+            movements.push_back(movement(j-1,j));
         }
-        arr->getPos(j)->setDato(actual);
-        movements.push_back(movement(j+1,i));
+        arr.getPos(j)->setDato(actual.dato);
+        movements.push_back(movement(j,i));
     }
 }
 
@@ -250,21 +1385,23 @@ void MainWindow::MergeAnimation(int i,int pos1, int pos2)
     lines.push_back(line);
 }
 
+
+
 template <class T>
-void MainWindow::MergeSort(SimpleList<T> *arr, int leftIndx, int rightIndx,int animationIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
+void MainWindow::MergeSort(SimpleList<T> &arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
 {
     if (leftIndx < rightIndx)
     {
         int pivote = leftIndx+(rightIndx-leftIndx)/2;
-        MergeSort(arr, leftIndx, pivote,animationIndx + 1);
-        MergeSort(arr, pivote+1, rightIndx,animationIndx + 1);
+        MergeSort(arr, leftIndx, pivote);
+        MergeSort(arr, pivote+1, rightIndx);
         Merge(arr, leftIndx, pivote, rightIndx);
     }
 }
 
 /*METODO AUXILIAR DEL MERGE SORT*/
 template <class T>
-void MainWindow::Merge(SimpleList<T> *arr, int leftIndx, int pivote, int rigthIndx)
+void MainWindow::Merge(SimpleList<T> &arr, int leftIndx, int pivote, int rigthIndx)
 {
     int i, j, k; //INDICES DE LOS CICLOS
     int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
@@ -273,43 +1410,48 @@ void MainWindow::Merge(SimpleList<T> *arr, int leftIndx, int pivote, int rigthIn
     SimpleList<T> *mayores = new SimpleList<T>();
 
     for (i = 0; i < nuevList1; i++)
-        menores->insertAtTail(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+        menores->insertAtTail(arr.getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
     for (j = 0; j < nuevList2; j++)
-         mayores->insertAtTail(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+         mayores->insertAtTail(arr.getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
     i = 0;
     j = 0;
     k = leftIndx;
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     while (i < nuevList1 && j < nuevList2)
     {
-        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        if ((temp1 = *menores->getPos(i)) < (temp2 = *mayores->getPos(j)) || (temp1 = *menores->getPos(i)) == (temp2 = *mayores->getPos(j))) // si menores[i] <= mayores[j]
         {
-            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+            movements.push_back(movement(k,i));
             i++;
         }
         else
         {
-            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+            movements.push_back(movement(k,j));
             j++;
         }
         k++;
     }
     while (i < nuevList1)
     {
-        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+        movements.push_back(movement(k,i));
         i++;
         k++;
     }
     while (j < nuevList2)
     {
-        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+        movements.push_back(movement(k,j));
         j++;
         k++;
     }
 }
 
-/*(doble list)*/
 template <class T>
-void MainWindow::MergeSort(DobleList<T> *arr, int leftIndx, int rightIndx) //Sobrecarga para la lista doble
+void MainWindow::MergeSort(DobleList<T> &arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
 {
     if (leftIndx < rightIndx)
     {
@@ -320,8 +1462,9 @@ void MainWindow::MergeSort(DobleList<T> *arr, int leftIndx, int rightIndx) //Sob
     }
 }
 
+/*METODO AUXILIAR DEL MERGE SORT*/
 template <class T>
-void MainWindow::Merge(DobleList<T> *arr, int leftIndx, int pivote, int rigthIndx)
+void MainWindow::Merge(DobleList<T> &arr, int leftIndx, int pivote, int rigthIndx)
 {
     int i, j, k; //INDICES DE LOS CICLOS
     int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
@@ -330,43 +1473,48 @@ void MainWindow::Merge(DobleList<T> *arr, int leftIndx, int pivote, int rigthInd
     DobleList<T> *mayores = new DobleList<T>();
 
     for (i = 0; i < nuevList1; i++)
-        menores->insertAtTail(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+        menores->insertAtTail(arr.getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
     for (j = 0; j < nuevList2; j++)
-         mayores->insertAtTail(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+         mayores->insertAtTail(arr.getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
     i = 0;
     j = 0;
     k = leftIndx;
+    DobleNode<T> temp1 = *arr.getPos(0);
+    DobleNode<T> temp2 = *arr.getPos(0);
     while (i < nuevList1 && j < nuevList2)
     {
-        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        if ((temp1 = *menores->getPos(i)) < (temp2 = *mayores->getPos(j)) || (temp1 = *menores->getPos(i)) == (temp2 = *mayores->getPos(j))) // si menores[i] <= mayores[j]
         {
-            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+            movements.push_back(movement(k,i));
             i++;
         }
         else
         {
-            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+            movements.push_back(movement(k,j));
             j++;
         }
         k++;
     }
     while (i < nuevList1)
     {
-        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+        movements.push_back(movement(k,i));
         i++;
         k++;
     }
     while (j < nuevList2)
     {
-        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+        movements.push_back(movement(k,j));
         j++;
         k++;
     }
 }
 
-/*(doble circular list)*/
 template <class T>
-void MainWindow::MergeSort(DCList<T> *arr, int leftIndx, int rightIndx) //Sobrecarga para la lista doble circular
+void MainWindow::MergeSort(DCList<T> &arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
 {
     if (leftIndx < rightIndx)
     {
@@ -377,8 +1525,9 @@ void MainWindow::MergeSort(DCList<T> *arr, int leftIndx, int rightIndx) //Sobrec
     }
 }
 
+/*METODO AUXILIAR DEL MERGE SORT*/
 template <class T>
-void MainWindow::Merge(DCList<T> *arr, int leftIndx, int pivote, int rigthIndx)
+void MainWindow::Merge(DCList<T> &arr, int leftIndx, int pivote, int rigthIndx)
 {
     int i, j, k; //INDICES DE LOS CICLOS
     int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
@@ -387,43 +1536,48 @@ void MainWindow::Merge(DCList<T> *arr, int leftIndx, int pivote, int rigthIndx)
     DCList<T> *mayores = new DCList<T>();
 
     for (i = 0; i < nuevList1; i++)
-        menores->insertAtTail(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+        menores->insertAtTail(arr.getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
     for (j = 0; j < nuevList2; j++)
-         mayores->insertAtTail(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+         mayores->insertAtTail(arr.getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
     i = 0;
     j = 0;
     k = leftIndx;
+    DobleNode<T> temp1 = *arr.getPos(0);
+    DobleNode<T> temp2 = *arr.getPos(0);
     while (i < nuevList1 && j < nuevList2)
     {
-        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        if ((temp1 = *menores->getPos(i)) < (temp2 = *mayores->getPos(j)) || (temp1 = *menores->getPos(i)) == (temp2 = *mayores->getPos(j))) // si menores[i] <= mayores[j]
         {
-            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+            movements.push_back(movement(k,i));
             i++;
         }
         else
         {
-            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+            movements.push_back(movement(k,j));
             j++;
         }
         k++;
     }
     while (i < nuevList1)
     {
-        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+        movements.push_back(movement(k,i));
         i++;
         k++;
     }
     while (j < nuevList2)
     {
-        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+        movements.push_back(movement(k,j));
         j++;
         k++;
     }
 }
 
-/*(pila)*/
 template <class T>
-void MainWindow::MergeSort(Stack<T> *arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
+void MainWindow::MergeSort(Stack<T> &arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
 {
     if (leftIndx < rightIndx)
     {
@@ -434,8 +1588,9 @@ void MainWindow::MergeSort(Stack<T> *arr, int leftIndx, int rightIndx) /* INDICE
     }
 }
 
+/*METODO AUXILIAR DEL MERGE SORT*/
 template <class T>
-void MainWindow::Merge(Stack<T> *arr, int leftIndx, int pivote, int rigthIndx)
+void MainWindow::Merge(Stack<T> &arr, int leftIndx, int pivote, int rigthIndx)
 {
     int i, j, k; //INDICES DE LOS CICLOS
     int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
@@ -444,54 +1599,50 @@ void MainWindow::Merge(Stack<T> *arr, int leftIndx, int pivote, int rigthIndx)
     Stack<T> *mayores = new Stack<T>();
 
     for (i = 0; i < nuevList1; i++)
-        menores->push(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+        menores->push(arr.getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
     for (j = 0; j < nuevList2; j++)
-         mayores->push(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+         mayores->push(arr.getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
     mayores = invertirPila(mayores);
     menores = invertirPila(menores);
     i = 0;
     j = 0;
     k = leftIndx;
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     while (i < nuevList1 && j < nuevList2)
     {
-        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        if ((temp1 = *menores->getPos(i)) < (temp2 = *mayores->getPos(j)) || (temp1 = *menores->getPos(i)) == (temp2 = *mayores->getPos(j))) // si menores[i] <= mayores[j]
         {
-            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+            movements.push_back(movement(k,i));
             i++;
         }
         else
         {
-            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+            movements.push_back(movement(k,j));
             j++;
         }
         k++;
     }
     while (i < nuevList1)
     {
-        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+        movements.push_back(movement(k,i));
         i++;
         k++;
     }
     while (j < nuevList2)
     {
-        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+        movements.push_back(movement(k,j));
         j++;
         k++;
     }
 }
 
 template <class T>
-Stack<T>* MainWindow::invertirPila(Stack<T> *arr) //metodo auxiliar para el merge con pila
-{
-    Stack<T> *temp = new Stack<T>();
-    while(arr->getSize() > 0)
-        temp->push(arr->pop());
-    return temp;
-}
-
-/*Cola*/
-template <class T>
-void MainWindow::MergeSort(Queue<T> *arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
+void MainWindow::MergeSort(Queue<T> &arr, int leftIndx, int rightIndx) /* INDICES IZQUIERDOS Y DERECHOS DE LA LISTA*/
 {
     if (leftIndx < rightIndx)
     {
@@ -502,8 +1653,9 @@ void MainWindow::MergeSort(Queue<T> *arr, int leftIndx, int rightIndx) /* INDICE
     }
 }
 
+/*METODO AUXILIAR DEL MERGE SORT*/
 template <class T>
-void MainWindow::Merge(Queue<T> *arr, int leftIndx, int pivote, int rigthIndx)
+void MainWindow::Merge(Queue<T> &arr, int leftIndx, int pivote, int rigthIndx)
 {
     int i, j, k; //INDICES DE LOS CICLOS
     int nuevList1 = pivote - leftIndx + 1; //TAMANO DE LA PRIMERA LISTA NUEVA
@@ -512,44 +1664,49 @@ void MainWindow::Merge(Queue<T> *arr, int leftIndx, int pivote, int rigthIndx)
     Queue<T> *mayores = new Queue<T>();
 
     for (i = 0; i < nuevList1; i++)
-        menores->enqueue(arr->getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
+        menores->enqueue(arr.getPos(leftIndx + i)->getDato()); //crea la nueva lista con los menores
     for (j = 0; j < nuevList2; j++)
-         mayores->enqueue(arr->getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
+         mayores->enqueue(arr.getPos(pivote + 1 + j)->getDato()); //crea la nueva lista con los mayores
     i = 0;
     j = 0;
     k = leftIndx;
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     while (i < nuevList1 && j < nuevList2)
     {
-        if (menores->getPos(i)->getDato() <= mayores->getPos(j)->getDato()) // si menores[i] <= mayores[j]
+        if ((temp1 = *menores->getPos(i)) < (temp2 = *mayores->getPos(j)) || (temp1 = *menores->getPos(i)) == (temp2 = *mayores->getPos(j))) // si menores[i] <= mayores[j]
         {
-            arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+            arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+            movements.push_back(movement(k,i));
             i++;
         }
         else
         {
-            arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+            arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+            movements.push_back(movement(k,j));
             j++;
         }
         k++;
     }
     while (i < nuevList1)
     {
-        arr->getPos(k)->setDato(menores->getPos(i)->getDato());
+        arr.getPos(k)->setDato(menores->getPos(i)->getDato());
+        movements.push_back(movement(k,i));
         i++;
         k++;
     }
     while (j < nuevList2)
     {
-        arr->getPos(k)->setDato(mayores->getPos(j)->getDato());
+        arr.getPos(k)->setDato(mayores->getPos(j)->getDato());
+        movements.push_back(movement(k,j));
         j++;
         k++;
     }
 }
 
-
 /* QUICK SORT */
 template<class T>
-void MainWindow::QuickSort(SimpleList<T> *arr, int low, int high) //Metodo para la lista simple
+void MainWindow::QuickSort(SimpleList<T> &arr, int low, int high) //Metodo para la lista simple
 {
     if (low < high){
         int pi = partition(arr, low, high);
@@ -560,27 +1717,27 @@ void MainWindow::QuickSort(SimpleList<T> *arr, int low, int high) //Metodo para 
 
 /*METODO AUXILIAR QUE HACE LA PARTICION EN EL QUICK SORT*/
 template<class T>
-int MainWindow::partition(SimpleList<T> *arr, int low, int high)
+int MainWindow::partition(SimpleList<T> &arr, int low, int high)
 {
-    SimpleNode<T>* pivot = arr->getPos(high);
+    SimpleNode<T> pivot = *arr.getPos(high);
+    SimpleNode<T> temp = *arr.getPos(0);
     int i = (low - 1);
     for (int j = low; j <= (high - 1); j++)
     {
-        if (arr->getPos(j)->dato <= pivot->dato)//changes acording to which one is higher
+        if ((temp = *arr.getPos(j)) < pivot || (temp = *arr.getPos(j)) == pivot )//changes acording to which one is higher
         {
           i++;
-          arr->swap(i,j);
+          arr.swap(i,j);
           movements.push_back(movement(i,j));
         }
     }
-    arr->swap((i+ 1),high);
-    movements.push_back(movement(i,high));
+    arr.swap((i+ 1),high);
+    movements.push_back(movement(i+1,high));
     return( i + 1 );
 }
 
-/*lista doble*/
 template<class T>
-void MainWindow::QuickSort(DobleList<T> *arr, int low, int high) //Metodo para la lista simple
+void MainWindow::QuickSort(DobleList<T> &arr, int low, int high) //Metodo para la lista simple
 {
     if (low < high){
         int pi = partition(arr, low, high);
@@ -589,28 +1746,29 @@ void MainWindow::QuickSort(DobleList<T> *arr, int low, int high) //Metodo para l
       }
 }
 
+/*METODO AUXILIAR QUE HACE LA PARTICION EN EL QUICK SORT*/
 template<class T>
-int MainWindow::partition(DobleList<T> *arr, int low, int high)
+int MainWindow::partition(DobleList<T> &arr, int low, int high)
 {
-    DobleNode<T>* pivot = arr->getPos(high);
+    DobleNode<T> pivot = *arr.getPos(high);
+    DobleNode<T> temp = *arr.getPos(0);
     int i = (low - 1);
     for (int j = low; j <= (high - 1); j++)
     {
-        if (arr->getPos(j)->getDato() <= pivot->getDato()) //changes acording to which one is higher
+        if ((temp = *arr.getPos(j)) < pivot || (temp = *arr.getPos(j)) == pivot )//changes acording to which one is higher
         {
           i++;
-          arr->swap(i,j);
+          arr.swap(i,j);
           movements.push_back(movement(i,j));
         }
     }
-    arr->swap((i+ 1),high);
-    movements.push_back(movement(i,high));
+    arr.swap((i+ 1),high);
+    movements.push_back(movement(i+1,high));
     return( i + 1 );
 }
 
-/*lista doble circular*/
 template<class T>
-void MainWindow::QuickSort(DCList<T> *arr, int low, int high) //Metodo para la lista simple
+void MainWindow::QuickSort(DCList<T> &arr, int low, int high) //Metodo para la lista simple
 {
     if (low < high){
         int pi = partition(arr, low, high);
@@ -619,28 +1777,29 @@ void MainWindow::QuickSort(DCList<T> *arr, int low, int high) //Metodo para la l
       }
 }
 
+/*METODO AUXILIAR QUE HACE LA PARTICION EN EL QUICK SORT*/
 template<class T>
-int MainWindow::partition(DCList<T> *arr, int low, int high)
+int MainWindow::partition(DCList<T> &arr, int low, int high)
 {
-    DobleNode<T>* pivot = arr->getPos(high);
+    DobleNode<T> pivot = *arr.getPos(high);
+    DobleNode<T> temp = *arr.getPos(0);
     int i = (low - 1);
     for (int j = low; j <= (high - 1); j++)
     {
-        if (arr->getPos(j)->getDato() <= pivot->getDato()) //changes acording to which one is higher
+        if ((temp = *arr.getPos(j)) < pivot || (temp = *arr.getPos(j)) == pivot )//changes acording to which one is higher
         {
           i++;
-          arr->swap(i,j);
+          arr.swap(i,j);
           movements.push_back(movement(i,j));
         }
     }
-    arr->swap((i+ 1),high);
-    movements.push_back(movement(i,high));
+    arr.swap((i+ 1),high);
+    movements.push_back(movement(i+1,high));
     return( i + 1 );
 }
 
-/*Pila*/
 template<class T>
-void MainWindow::QuickSort(Stack<T> *arr, int low, int high) //Metodo para la lista simple
+void MainWindow::QuickSort(Stack<T> &arr, int low, int high) //Metodo para la lista simple
 {
     if (low < high){
         int pi = partition(arr, low, high);
@@ -649,28 +1808,29 @@ void MainWindow::QuickSort(Stack<T> *arr, int low, int high) //Metodo para la li
       }
 }
 
+/*METODO AUXILIAR QUE HACE LA PARTICION EN EL QUICK SORT*/
 template<class T>
-int MainWindow::partition(Stack<T> *arr, int low, int high)
+int MainWindow::partition(Stack<T> &arr, int low, int high)
 {
-    SimpleNode<T>* pivot = arr->getPos(high);
+    SimpleNode<T> pivot = *arr.getPos(high);
+    SimpleNode<T> temp = *arr.getPos(0);
     int i = (low - 1);
     for (int j = low; j <= (high - 1); j++)
     {
-        if (arr->getPos(j)->dato <= pivot->dato)//changes acording to which one is higher
+        if ((temp = *arr.getPos(j)) < pivot || (temp = *arr.getPos(j)) == pivot )//changes acording to which one is higher
         {
           i++;
-          arr->swap(i,j);
+          arr.swap(i,j);
           movements.push_back(movement(i,j));
         }
     }
-    arr->swap((i+ 1),high);
-    movements.push_back(movement(i,high));
+    arr.swap((i+ 1),high);
+    movements.push_back(movement(i+1,high));
     return( i + 1 );
 }
 
-/*cola*/
 template<class T>
-void MainWindow::QuickSort(Queue<T> *arr, int low, int high) //Metodo para la lista simple
+void MainWindow::QuickSort(Queue<T> &arr, int low, int high) //Metodo para la lista simple
 {
     if (low < high){
         int pi = partition(arr, low, high);
@@ -679,119 +1839,127 @@ void MainWindow::QuickSort(Queue<T> *arr, int low, int high) //Metodo para la li
       }
 }
 
+/*METODO AUXILIAR QUE HACE LA PARTICION EN EL QUICK SORT*/
 template<class T>
-int MainWindow::partition(Queue<T> *arr, int low, int high)
+int MainWindow::partition(Queue<T> &arr, int low, int high)
 {
-    SimpleNode<T>* pivot = arr->getPos(high);
+    SimpleNode<T> pivot = *arr.getPos(high);
+    SimpleNode<T> temp = *arr.getPos(0);
     int i = (low - 1);
     for (int j = low; j <= (high - 1); j++)
     {
-        if (arr->getPos(j)->dato <= pivot->dato)//changes acording to which one is higher
+        if ((temp = *arr.getPos(j)) < pivot || (temp = *arr.getPos(j)) == pivot )//changes acording to which one is higher
         {
           i++;
-          arr->swap(i,j);
+          arr.swap(i,j);
           movements.push_back(movement(i,j));
         }
     }
-    arr->swap((i+ 1),high);
-    movements.push_back(movement(i,high));
+    arr.swap((i+ 1),high);
+    movements.push_back(movement(i+1,high));
     return( i + 1 );
 }
-
 
 /* SELECTION SORT */
 template <class T>
-void MainWindow::SelectionSort(SimpleList<T> *arr, int tamanio) //lista simple
+void MainWindow::SelectionSort(SimpleList<T> &arr, int tamanio) //lista simple
 {
     T atemp;
     int i, j, min_idx;  //indices de ciclos
     for(i = 0; i < tamanio-1; i++)
     {
         min_idx = i;
+        SimpleNode<T> temp1 = *arr.getPos(0);
+        SimpleNode<T> temp2 = *arr.getPos(0);
         for(j = i+1; j < tamanio; j++)
-            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+            if((temp1 = *arr.getPos(j)) < (temp2 = *arr.getPos(min_idx)))
                 min_idx = j;
-        atemp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
-        arr->getPos(min_idx)->setDato(atemp);
+        atemp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(min_idx)->getDato());
+        arr.getPos(min_idx)->setDato(atemp);
         movements.push_back(movement(min_idx,i));
     }
 }
 
 template <class T>
-void MainWindow::SelectionSort(DobleList<T> *arr, int tamanio) //lista doble
+void MainWindow::SelectionSort(DobleList<T> &arr, int tamanio) //lista simple
 {
     T atemp;
     int i, j, min_idx;  //indices de ciclos
     for(i = 0; i < tamanio-1; i++)
     {
         min_idx = i;
+        DobleNode<T> temp1 = *arr.getPos(0);
+        DobleNode<T> temp2 = *arr.getPos(0);
         for(j = i+1; j < tamanio; j++)
-            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+            if((temp1 = *arr.getPos(j)) < (temp2 = *arr.getPos(min_idx)))
                 min_idx = j;
-        atemp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
-        arr->getPos(min_idx)->setDato(atemp);
+        atemp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(min_idx)->getDato());
+        arr.getPos(min_idx)->setDato(atemp);
         movements.push_back(movement(min_idx,i));
     }
 }
 
 template <class T>
-void MainWindow::SelectionSort(DCList<T> *arr, int tamanio) //lista doble circular
+void MainWindow::SelectionSort(DCList<T> &arr, int tamanio) //lista simple
 {
     T atemp;
     int i, j, min_idx;  //indices de ciclos
     for(i = 0; i < tamanio-1; i++)
     {
         min_idx = i;
+        DobleNode<T> temp1 = *arr.getPos(0);
+        DobleNode<T> temp2 = *arr.getPos(0);
         for(j = i+1; j < tamanio; j++)
-            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+            if((temp1 = *arr.getPos(j)) < (temp2 = *arr.getPos(min_idx)))
                 min_idx = j;
-        atemp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
-        arr->getPos(min_idx)->setDato(atemp);
+        atemp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(min_idx)->getDato());
+        arr.getPos(min_idx)->setDato(atemp);
         movements.push_back(movement(min_idx,i));
     }
 }
 
 template <class T>
-void MainWindow::SelectionSort(Stack<T> *arr, int tamanio) //pila
+void MainWindow::SelectionSort(Stack<T> &arr, int tamanio) //lista simple
 {
     T atemp;
     int i, j, min_idx;  //indices de ciclos
     for(i = 0; i < tamanio-1; i++)
     {
         min_idx = i;
+        SimpleNode<T> temp1 = *arr.getPos(0);
+        SimpleNode<T> temp2 = *arr.getPos(0);
         for(j = i+1; j < tamanio; j++)
-            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+            if((temp1 = *arr.getPos(j)) < (temp2 = *arr.getPos(min_idx)))
                 min_idx = j;
-        atemp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
-        arr->getPos(min_idx)->setDato(atemp);
+        atemp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(min_idx)->getDato());
+        arr.getPos(min_idx)->setDato(atemp);
         movements.push_back(movement(min_idx,i));
     }
 }
 
 template <class T>
-void MainWindow::SelectionSort(Queue<T> *arr, int tamanio) //cola
+void MainWindow::SelectionSort(Queue<T> &arr, int tamanio) //lista simple
 {
     T atemp;
     int i, j, min_idx;  //indices de ciclos
     for(i = 0; i < tamanio-1; i++)
     {
         min_idx = i;
+        SimpleNode<T> temp1 = *arr.getPos(0);
+        SimpleNode<T> temp2 = *arr.getPos(0);
         for(j = i+1; j < tamanio; j++)
-            if(arr->getPos(j)->getDato() < arr->getPos(min_idx)->getDato())
+            if((temp1 = *arr.getPos(j)) < (temp2 = *arr.getPos(min_idx)))
                 min_idx = j;
-        atemp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(min_idx)->getDato());
-        arr->getPos(min_idx)->setDato(atemp);
+        atemp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(min_idx)->getDato());
+        arr.getPos(min_idx)->setDato(atemp);
         movements.push_back(movement(min_idx,i));
     }
 }
-
-
-
 /* RADIX SORT */
 template<class T>
 void MainWindow::RadixSort(SimpleList<T> *arr) //radix de lista simple
@@ -948,10 +2116,11 @@ int MainWindow::mayorCantidadLetras(SimpleList<string> *arr)
 
 
 /* HEAP SORT */
+
 template <class T>
-void MainWindow::HeapSort(SimpleList<T> *arr) //lista simple
+void MainWindow::HeapSort(SimpleList<T> &arr) //lista simple
 {
-    int tamano = arr->getSize();
+    int tamano = arr.getSize();
 
     for(int i = tamano / 2 - 1; i >= 0; i--)
         HeapSortAux(arr, tamano, i);
@@ -959,9 +2128,10 @@ void MainWindow::HeapSort(SimpleList<T> *arr) //lista simple
     for(int i = tamano - 1; i >= 0; i--)
     {
         //cambio de los valores
-        T temp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
-        arr->getPos(0)->setDato(temp);
+        T temp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(0)->getDato());
+        arr.getPos(0)->setDato(temp);
+        movements.push_back(movement(i,0));
 
         HeapSortAux(arr, i, 0);
     }
@@ -970,35 +2140,36 @@ void MainWindow::HeapSort(SimpleList<T> *arr) //lista simple
 
 /*METODO AUXILIAR*/
 template <class T>
-void MainWindow::HeapSortAux(SimpleList<T> *arr, int largo, int aTratar)
+void MainWindow::HeapSortAux(SimpleList<T> &arr, int largo, int aTratar)
 {
     int mayor = aTratar;
     int izq = 2*aTratar + 1; //hijo izquierdo en la lista
     int der = 2*aTratar + 2; //hijo derecho en la lista
-
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     //si el hijo izquierdo es mayor que el padre
-    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+    if(izq < largo && ((temp1 = *arr.getPos(izq)) > (temp2 = *arr.getPos(mayor))))
         mayor = izq;
 
     //si el hijo derecho es mayor que el padre
-    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+    if(der < largo && ((temp1 = *arr.getPos(der)) > (temp2 = *arr.getPos(mayor))))
         mayor = der;
 
     if(mayor != aTratar)
     {
         //Cambio del largo y el aTratar
-        T temp = arr->getPos(mayor)->getDato();
-        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
-        arr->getPos(aTratar)->setDato(temp);
-
+        T temp = arr.getPos(mayor)->getDato();
+        arr.getPos(mayor)->setDato(arr.getPos(aTratar)->getDato());
+        arr.getPos(aTratar)->setDato(temp);
+        movements.push_back(movement(mayor,aTratar));
         HeapSortAux(arr, largo, mayor);
     }
 }
 
 template <class T>
-void MainWindow::HeapSort(DobleList<T> *arr) //lista doble
+void MainWindow::HeapSort(DobleList<T> &arr) //lista simple
 {
-    int tamano = arr->getSize();
+    int tamano = arr.getSize();
 
     for(int i = tamano / 2 - 1; i >= 0; i--)
         HeapSortAux(arr, tamano, i);
@@ -1006,45 +2177,48 @@ void MainWindow::HeapSort(DobleList<T> *arr) //lista doble
     for(int i = tamano - 1; i >= 0; i--)
     {
         //cambio de los valores
-        T temp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
-        arr->getPos(0)->setDato(temp);
+        T temp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(0)->getDato());
+        arr.getPos(0)->setDato(temp);
+        movements.push_back(movement(i,0));
 
         HeapSortAux(arr, i, 0);
     }
 
 }
 
+/*METODO AUXILIAR*/
 template <class T>
-void MainWindow::HeapSortAux(DobleList<T> *arr, int largo, int aTratar)
+void MainWindow::HeapSortAux(DobleList<T> &arr, int largo, int aTratar)
 {
     int mayor = aTratar;
     int izq = 2*aTratar + 1; //hijo izquierdo en la lista
     int der = 2*aTratar + 2; //hijo derecho en la lista
-
+    DobleNode<T> temp1 = *arr.getPos(0);
+    DobleNode<T> temp2 = *arr.getPos(0);
     //si el hijo izquierdo es mayor que el padre
-    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+    if(izq < largo && ((temp1 = *arr.getPos(izq)) > (temp2 = *arr.getPos(mayor))))
         mayor = izq;
 
     //si el hijo derecho es mayor que el padre
-    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+    if(der < largo && ((temp1 = *arr.getPos(der)) > (temp2 = *arr.getPos(mayor))))
         mayor = der;
 
     if(mayor != aTratar)
     {
         //Cambio del largo y el aTratar
-        T temp = arr->getPos(mayor)->getDato();
-        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
-        arr->getPos(aTratar)->setDato(temp);
-
+        T temp = arr.getPos(mayor)->getDato();
+        arr.getPos(mayor)->setDato(arr.getPos(aTratar)->getDato());
+        arr.getPos(aTratar)->setDato(temp);
+        movements.push_back(movement(mayor,aTratar));
         HeapSortAux(arr, largo, mayor);
     }
 }
 
 template <class T>
-void MainWindow::HeapSort(DCList<T> *arr) //lista doble circular
+void MainWindow::HeapSort(DCList<T> &arr) //lista simple
 {
-    int tamano = arr->getSize();
+    int tamano = arr.getSize();
 
     for(int i = tamano / 2 - 1; i >= 0; i--)
         HeapSortAux(arr, tamano, i);
@@ -1052,45 +2226,48 @@ void MainWindow::HeapSort(DCList<T> *arr) //lista doble circular
     for(int i = tamano - 1; i >= 0; i--)
     {
         //cambio de los valores
-        T temp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
-        arr->getPos(0)->setDato(temp);
+        T temp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(0)->getDato());
+        arr.getPos(0)->setDato(temp);
+        movements.push_back(movement(i,0));
 
         HeapSortAux(arr, i, 0);
     }
 
 }
 
+/*METODO AUXILIAR*/
 template <class T>
-void MainWindow::HeapSortAux(DCList<T> *arr, int largo, int aTratar)
+void MainWindow::HeapSortAux(DCList<T> &arr, int largo, int aTratar)
 {
     int mayor = aTratar;
     int izq = 2*aTratar + 1; //hijo izquierdo en la lista
     int der = 2*aTratar + 2; //hijo derecho en la lista
-
+    DobleNode<T> temp1 = *arr.getPos(0);
+    DobleNode<T> temp2 = *arr.getPos(0);
     //si el hijo izquierdo es mayor que el padre
-    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+    if(izq < largo && ((temp1 = *arr.getPos(izq)) > (temp2 = *arr.getPos(mayor))))
         mayor = izq;
 
     //si el hijo derecho es mayor que el padre
-    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+    if(der < largo && ((temp1 = *arr.getPos(der)) > (temp2 = *arr.getPos(mayor))))
         mayor = der;
 
     if(mayor != aTratar)
     {
         //Cambio del largo y el aTratar
-        T temp = arr->getPos(mayor)->getDato();
-        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
-        arr->getPos(aTratar)->setDato(temp);
-
+        T temp = arr.getPos(mayor)->getDato();
+        arr.getPos(mayor)->setDato(arr.getPos(aTratar)->getDato());
+        arr.getPos(aTratar)->setDato(temp);
+        movements.push_back(movement(mayor,aTratar));
         HeapSortAux(arr, largo, mayor);
     }
 }
 
 template <class T>
-void MainWindow::HeapSort(Stack<T> *arr) //pila
+void MainWindow::HeapSort(Stack<T> &arr) //lista simple
 {
-    int tamano = arr->getSize();
+    int tamano = arr.getSize();
 
     for(int i = tamano / 2 - 1; i >= 0; i--)
         HeapSortAux(arr, tamano, i);
@@ -1098,45 +2275,48 @@ void MainWindow::HeapSort(Stack<T> *arr) //pila
     for(int i = tamano - 1; i >= 0; i--)
     {
         //cambio de los valores
-        T temp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
-        arr->getPos(0)->setDato(temp);
+        T temp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(0)->getDato());
+        arr.getPos(0)->setDato(temp);
+        movements.push_back(movement(i,0));
 
         HeapSortAux(arr, i, 0);
     }
 
 }
 
+/*METODO AUXILIAR*/
 template <class T>
-void MainWindow::HeapSortAux(Stack<T> *arr, int largo, int aTratar)
+void MainWindow::HeapSortAux(Stack<T> &arr, int largo, int aTratar)
 {
     int mayor = aTratar;
     int izq = 2*aTratar + 1; //hijo izquierdo en la lista
     int der = 2*aTratar + 2; //hijo derecho en la lista
-
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     //si el hijo izquierdo es mayor que el padre
-    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+    if(izq < largo && ((temp1 = *arr.getPos(izq)) > (temp2 = *arr.getPos(mayor))))
         mayor = izq;
 
     //si el hijo derecho es mayor que el padre
-    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+    if(der < largo && ((temp1 = *arr.getPos(der)) > (temp2 = *arr.getPos(mayor))))
         mayor = der;
 
     if(mayor != aTratar)
     {
         //Cambio del largo y el aTratar
-        T temp = arr->getPos(mayor)->getDato();
-        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
-        arr->getPos(aTratar)->setDato(temp);
-
+        T temp = arr.getPos(mayor)->getDato();
+        arr.getPos(mayor)->setDato(arr.getPos(aTratar)->getDato());
+        arr.getPos(aTratar)->setDato(temp);
+        movements.push_back(movement(mayor,aTratar));
         HeapSortAux(arr, largo, mayor);
     }
 }
 
 template <class T>
-void MainWindow::HeapSort(Queue<T> *arr) //cola
+void MainWindow::HeapSort(Queue<T> &arr) //lista simple
 {
-    int tamano = arr->getSize();
+    int tamano = arr.getSize();
 
     for(int i = tamano / 2 - 1; i >= 0; i--)
         HeapSortAux(arr, tamano, i);
@@ -1144,141 +2324,146 @@ void MainWindow::HeapSort(Queue<T> *arr) //cola
     for(int i = tamano - 1; i >= 0; i--)
     {
         //cambio de los valores
-        T temp = arr->getPos(i)->getDato();
-        arr->getPos(i)->setDato(arr->getPos(0)->getDato());
-        arr->getPos(0)->setDato(temp);
+        T temp = arr.getPos(i)->getDato();
+        arr.getPos(i)->setDato(arr.getPos(0)->getDato());
+        arr.getPos(0)->setDato(temp);
+        movements.push_back(movement(i,0));
 
         HeapSortAux(arr, i, 0);
     }
 
 }
 
+/*METODO AUXILIAR*/
 template <class T>
-void MainWindow::HeapSortAux(Queue<T> *arr, int largo, int aTratar)
+void MainWindow::HeapSortAux(Queue<T> &arr, int largo, int aTratar)
 {
     int mayor = aTratar;
     int izq = 2*aTratar + 1; //hijo izquierdo en la lista
     int der = 2*aTratar + 2; //hijo derecho en la lista
-
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     //si el hijo izquierdo es mayor que el padre
-    if(izq < largo && (arr->getPos(izq)->getDato() > arr->getPos(mayor)->getDato()))
+    if(izq < largo && ((temp1 = *arr.getPos(izq)) > (temp2 = *arr.getPos(mayor))))
         mayor = izq;
 
     //si el hijo derecho es mayor que el padre
-    if(der < largo && (arr->getPos(der)->getDato() > arr->getPos(mayor)->getDato()))
+    if(der < largo && ((temp1 = *arr.getPos(der)) > (temp2 = *arr.getPos(mayor))))
         mayor = der;
 
     if(mayor != aTratar)
     {
         //Cambio del largo y el aTratar
-        T temp = arr->getPos(mayor)->getDato();
-        arr->getPos(mayor)->setDato(arr->getPos(aTratar)->getDato());
-        arr->getPos(aTratar)->setDato(temp);
-
+        T temp = arr.getPos(mayor)->getDato();
+        arr.getPos(mayor)->setDato(arr.getPos(aTratar)->getDato());
+        arr.getPos(aTratar)->setDato(temp);
+        movements.push_back(movement(mayor,aTratar));
         HeapSortAux(arr, largo, mayor);
     }
 }
-
 /* SHELL SORT */
- template <class T>
-void MainWindow::ShellSort(SimpleList<T> *arr, int tamano) //lista simple
+template <class T>
+void MainWindow::ShellSort(SimpleList<T>& arr, int tamano) //lista simple
 {
     for (int gap = tamano/2; gap > 0; gap = gap/2)
         for(int i = gap; i < tamano; i += 1)
         {
-            T temp =  arr->getPos(i)->getDato();
+            SimpleNode<T> temp =  *arr.getPos(i);
+            SimpleNode<T> temp2 = *arr.getPos(0);
             int j;
-            for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
+            for(j = i; j >= gap && (temp2 = *arr.getPos(j-gap)) > temp; j -= gap)
             {
-                arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
+                arr.getPos(j)->setDato(arr.getPos(j-gap)->getDato());
                 movements.push_back(movement(j,j - gap));
             }
-             arr->getPos(j)->setDato(temp);
+             arr.getPos(j)->setDato(temp.dato);
         }
 }
-
 template <class T>
-void MainWindow::ShellSort(DobleList<T> *arr, int tamano) //lista doble
+void MainWindow::ShellSort(DobleList<T>& arr, int tamano) //lista simple
 {
-   for (int gap = tamano/2; gap > 0; gap = gap/2)
-       for(int i = gap; i < tamano; i += 1)
-       {
-           T temp =  arr->getPos(i)->getDato();
-           int j;
-           for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
-           {
-               arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
-               movements.push_back(movement(j,j - gap));
-           }
-            arr->getPos(j)->setDato(temp);
-       }
+    for (int gap = tamano/2; gap > 0; gap = gap/2)
+        for(int i = gap; i < tamano; i += 1)
+        {
+            DobleNode<T> temp =  *arr.getPos(i);
+            DobleNode<T> temp2 = *arr.getPos(0);
+            int j;
+            for(j = i; j >= gap && (temp2 = *arr.getPos(j-gap)) > temp; j -= gap)
+            {
+                arr.getPos(j)->setDato(arr.getPos(j-gap)->getDato());
+                movements.push_back(movement(j,j - gap));
+            }
+             arr.getPos(j)->setDato(temp.getDato());
+        }
 }
-
 template <class T>
-void MainWindow::ShellSort(DCList<T> *arr, int tamano) //lista doble circular
+void MainWindow::ShellSort(DCList<T>& arr, int tamano) //lista simple
 {
-   for (int gap = tamano/2; gap > 0; gap = gap/2)
-       for(int i = gap; i < tamano; i += 1)
-       {
-           T temp =  arr->getPos(i)->getDato();
-           int j;
-           for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
-           {
-               arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
-               movements.push_back(movement(j,j - gap));
-           }
-            arr->getPos(j)->setDato(temp);
-       }
+    for (int gap = tamano/2; gap > 0; gap = gap/2)
+        for(int i = gap; i < tamano; i += 1)
+        {
+            DobleNode<T> temp =  *arr.getPos(i);
+            DobleNode<T> temp2 = *arr.getPos(0);
+            int j;
+            for(j = i; j >= gap && (temp2 = *arr.getPos(j-gap)) > temp; j -= gap)
+            {
+                arr.getPos(j)->setDato(arr.getPos(j-gap)->getDato());
+                movements.push_back(movement(j,j - gap));
+            }
+             arr.getPos(j)->setDato(temp.getDato());
+        }
 }
-
 template <class T>
-void MainWindow::ShellSort(Stack<T> *arr, int tamano) //pila
+void MainWindow::ShellSort(Stack<T>& arr, int tamano) //lista simple
 {
-   for (int gap = tamano/2; gap > 0; gap = gap/2)
-       for(int i = gap; i < tamano; i += 1)
-       {
-           T temp =  arr->getPos(i)->getDato();
-           int j;
-           for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
-           {
-               arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
-               movements.push_back(movement(j,j - gap));
-           }
-            arr->getPos(j)->setDato(temp);
-       }
+    for (int gap = tamano/2; gap > 0; gap = gap/2)
+        for(int i = gap; i < tamano; i += 1)
+        {
+            SimpleNode<T> temp =  *arr.getPos(i);
+            SimpleNode<T> temp2 = *arr.getPos(0);
+            int j;
+            for(j = i; j >= gap && (temp2 = *arr.getPos(j-gap)) > temp; j -= gap)
+            {
+                arr.getPos(j)->setDato(arr.getPos(j-gap)->getDato());
+                movements.push_back(movement(j,j - gap));
+            }
+             arr.getPos(j)->setDato(temp.dato);
+        }
 }
-
 template <class T>
-void MainWindow::ShellSort(Queue<T> *arr, int tamano) //cola
+void MainWindow::ShellSort(Queue<T>& arr, int tamano) //lista simple
 {
-   for (int gap = tamano/2; gap > 0; gap = gap/2)
-       for(int i = gap; i < tamano; i += 1)
-       {
-           T temp =  arr->getPos(i)->getDato();
-           int j;
-           for(j = i; j >= gap && arr->getPos(j-gap)->getDato() > temp; j -= gap)
-           {
-               arr->getPos(j)->setDato(arr->getPos(j-gap)->getDato());
-               movements.push_back(movement(j,j - gap));
-           }
-            arr->getPos(j)->setDato(temp);
-       }
+    for (int gap = tamano/2; gap > 0; gap = gap/2)
+        for(int i = gap; i < tamano; i += 1)
+        {
+            SimpleNode<T> temp =  *arr.getPos(i);
+            SimpleNode<T> temp2 = *arr.getPos(0);
+            int j;
+            for(j = i; j >= gap && (temp2 = *arr.getPos(j-gap)) > temp; j -= gap)
+            {
+                arr.getPos(j)->setDato(arr.getPos(j-gap)->getDato());
+                movements.push_back(movement(j,j - gap));
+            }
+             arr.getPos(j)->setDato(temp.dato);
+        }
 }
 
 
 /* BUBBLE SORT */
 template<class T>
-void MainWindow::BubbleSort(SimpleList<T> *arr)
+void MainWindow::BubbleSort(SimpleList<T> &arr)
 {
     int i,j,n;
-    n = arr->getSize();
+    n = arr.getSize();\
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     for (i = 0; i< n-1; i++)
     {
         for(j = 0; j<n-i-1; j++)
         {
-            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            if((temp1 = *arr.getPos(j)) > (temp2 = *arr.getPos(j+1)))
             {
-                arr->swap(j,j+1);
+                arr.swap(j,j+1);
                 movements.push_back(movement(j,j+1));
             }
         }
@@ -1286,15 +2471,17 @@ void MainWindow::BubbleSort(SimpleList<T> *arr)
 }
 
 template<class T>
-void MainWindow::BubbleSort(DobleList<T> *arr)
+void MainWindow::BubbleSort(DobleList<T> &arr)
 {
     int i,j,n;
-    n = arr->gettSize();
+    n = arr.getSize();\
+    DobleNode<T> temp1 = *arr.getPos(0);
+    DobleNode<T> temp2 = *arr.getPos(0);
     for (i = 0; i< n-1; i++)
     {
         for(j = 0; j<n-i-1; j++)
         {
-            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            if((temp1 = *arr.getPos(j)) > (temp2 = *arr.getPos(j+1)))
             {
                 arr.swap(j,j+1);
                 movements.push_back(movement(j,j+1));
@@ -1303,51 +2490,57 @@ void MainWindow::BubbleSort(DobleList<T> *arr)
     }
 }
 template<class T>
-void MainWindow::BubbleSort(DCList<T> *arr)
+void MainWindow::BubbleSort(DCList<T> &arr)
 {
     int i,j,n;
-    n = arr->getSize();
+    n = arr.getSize();\
+    DobleNode<T> temp1 = *arr.getPos(0);
+    DobleNode<T> temp2 = *arr.getPos(0);
     for (i = 0; i< n-1; i++)
     {
         for(j = 0; j<n-i-1; j++)
         {
-            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            if((temp1 = *arr.getPos(j)) > (temp2 = *arr.getPos(j+1)))
             {
-                arr->swap(j,j+1);
+                arr.swap(j,j+1);
                 movements.push_back(movement(j,j+1));
             }
         }
     }
 }
 template<class T>
-void MainWindow::BubbleSort(Stack<T> *arr)
+void MainWindow::BubbleSort(Stack<T> &arr)
 {
     int i,j,n;
-    n = arr->getSize();
+    n = arr.getSize();\
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     for (i = 0; i< n-1; i++)
     {
         for(j = 0; j<n-i-1; j++)
         {
-            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            if((temp1 = *arr.getPos(j)) > (temp2 = *arr.getPos(j+1)))
             {
-                arr->swap(j,j+1);
+                arr.swap(j,j+1);
                 movements.push_back(movement(j,j+1));
             }
         }
     }
 }
 template<class T>
-void MainWindow::BubbleSort(Queue<T> *arr)
+void MainWindow::BubbleSort(Queue<T> &arr)
 {
     int i,j,n;
-    n = arr->getSize();
+    n = arr.getSize();\
+    SimpleNode<T> temp1 = *arr.getPos(0);
+    SimpleNode<T> temp2 = *arr.getPos(0);
     for (i = 0; i< n-1; i++)
     {
         for(j = 0; j<n-i-1; j++)
         {
-            if(arr->getPos(j)->getDato() > arr->getPos(j+1)->getDato())
+            if((temp1 = *arr.getPos(j)) > (temp2 = *arr.getPos(j+1)))
             {
-                arr->swap(j,j+1);
+                arr.swap(j,j+1);
                 movements.push_back(movement(j,j+1));
             }
         }
@@ -1355,7 +2548,7 @@ void MainWindow::BubbleSort(Queue<T> *arr)
 }
 
 /* BUBBLEDOBLE */
-template<class T>
+template <class T>
 void MainWindow::DobleBubble(SimpleList<T> &arr, int end)
 {
     bool permutation;
@@ -1367,9 +2560,7 @@ void MainWindow::DobleBubble(SimpleList<T> &arr, int end)
         while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
         {
             en_cours += sens;
-            SimpleNode<T> a = *arr[en_cours];
-            SimpleNode<T> b = *arr[en_cours-1];
-            if (a < b)
+            if (arr[en_cours] < arr[en_cours-1])
             {
                 arr.swap(en_cours,en_cours-1);
                 movements.push_back(movement(en_cours,en_cours - 1));
@@ -1383,7 +2574,7 @@ void MainWindow::DobleBubble(SimpleList<T> &arr, int end)
 }
 
 template<class T>
-void MainWindow::DobleBubble(DobleList<T> *arr, int end) //lista doble
+void MainWindow::DobleBubble(DobleList<T> &arr, int end)
 {
     bool permutation;
     int en_cours = 0, sens = 1;
@@ -1394,9 +2585,9 @@ void MainWindow::DobleBubble(DobleList<T> *arr, int end) //lista doble
         while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
         {
             en_cours += sens;
-            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            if (arr.getPos(en_cours) < arr.getPos(en_cours-1))
             {
-                arr->swap(en_cours,en_cours-1);
+                arr.swap(en_cours,en_cours-1);
                 movements.push_back(movement(en_cours,en_cours - 1));
                 permutation = true;
             }
@@ -1408,7 +2599,7 @@ void MainWindow::DobleBubble(DobleList<T> *arr, int end) //lista doble
 }
 
 template<class T>
-void MainWindow::DobleBubble(DCList<T> *arr, int end) //lista doble circular
+void MainWindow::DobleBubble(DCList<T> &arr, int end)
 {
     bool permutation;
     int en_cours = 0, sens = 1;
@@ -1419,9 +2610,9 @@ void MainWindow::DobleBubble(DCList<T> *arr, int end) //lista doble circular
         while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
         {
             en_cours += sens;
-            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            if (arr.getPos(en_cours) < arr.getPos(en_cours-1))
             {
-                arr->swap(en_cours,en_cours-1);
+                arr.swap(en_cours,en_cours-1);
                 movements.push_back(movement(en_cours,en_cours - 1));
                 permutation = true;
             }
@@ -1433,7 +2624,7 @@ void MainWindow::DobleBubble(DCList<T> *arr, int end) //lista doble circular
 }
 
 template<class T>
-void MainWindow::DobleBubble(Stack<T> *arr, int end) //pila
+void MainWindow::DobleBubble(Stack<T> &arr, int end)
 {
     bool permutation;
     int en_cours = 0, sens = 1;
@@ -1444,9 +2635,9 @@ void MainWindow::DobleBubble(Stack<T> *arr, int end) //pila
         while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
         {
             en_cours += sens;
-            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            if (arr.getPos(en_cours) < arr.getPos(en_cours-1))
             {
-                arr->swap(en_cours,en_cours-1);
+                arr.swap(en_cours,en_cours-1);
                 movements.push_back(movement(en_cours,en_cours - 1));
                 permutation = true;
             }
@@ -1458,7 +2649,7 @@ void MainWindow::DobleBubble(Stack<T> *arr, int end) //pila
 }
 
 template<class T>
-void MainWindow::DobleBubble(Queue<T> *arr, int end) //cola
+void MainWindow::DobleBubble(Queue<T> &arr, int end)
 {
     bool permutation;
     int en_cours = 0, sens = 1;
@@ -1469,9 +2660,9 @@ void MainWindow::DobleBubble(Queue<T> *arr, int end) //cola
         while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
         {
             en_cours += sens;
-            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            if (arr.getPos(en_cours) < arr.getPos(en_cours-1))
             {
-                arr->swap(en_cours,en_cours-1);
+                arr.swap(en_cours,en_cours-1);
                 movements.push_back(movement(en_cours,en_cours - 1));
                 permutation = true;
             }
@@ -1481,23 +2672,7 @@ void MainWindow::DobleBubble(Queue<T> *arr, int end) //cola
     }
     while (permutation);
 }
-
-/*METODO PARA LA OBTENCION ALEATORIA DE N PALABRAS (N = CANTIDAD)*/
-void MainWindow::buildWords(SimpleList<string> *arr, int cantidad)
-{
-    srand(time(NULL));
-
-    int indice;
-    for(int i = 0; i < cantidad; i++)
-    {
-        indice = rand() % 1000 + 1;
-        string palabra (buildWordsAux(indice));
-        arr->insertAtTail(palabra);
-    }
-}
-
-/*Metodo que saca una palabra aleatoriamente*/
-string MainWindow::buildWordsAux(int indice)
+string MainWindow::buildWord(int indice)
 {
     ifstream file("/home/retr0/Escritorio/Datos/ED_Progra_1/Primer_Proyecto_Programado/palabras.txt");
     string palabra;
@@ -1511,6 +2686,7 @@ string MainWindow::buildWordsAux(int indice)
     return palabra;
 }
 
+/*METODOS DE VALIDACION EN INTERFAZ*/
 void MainWindow::on_sbxRango1_valueChanged(int arg1)
 {
     ui->sbxRango2->setMinimum(arg1+1);
@@ -1519,4 +2695,13 @@ void MainWindow::on_sbxRango1_valueChanged(int arg1)
 void MainWindow::on_sbxRango2_valueChanged(int arg1)
 {
     ui->sbxRango1->setMaximum(arg1-1);
+}
+
+template <class T>
+Stack<T>* MainWindow::invertirPila(Stack<T> *arr) //metodo auxiliar para el merge con pila
+{
+    Stack<T> *temp = new Stack<T>();
+    while(arr->getSize() > 0)
+        temp->push(arr->pop());
+    return temp;
 }

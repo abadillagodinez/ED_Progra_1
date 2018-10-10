@@ -15,6 +15,7 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     movement.cpp \
+    animationstring.cpp
 
 HEADERS  += mainwindow.h \
     simplenode.h \
@@ -24,7 +25,8 @@ HEADERS  += mainwindow.h \
     dclist.h \
     simplelist.h \
     queue.h \
-    movement.h
+    movement.h \
+    animationstring.h
 
 FORMS    += mainwindow.ui
 
