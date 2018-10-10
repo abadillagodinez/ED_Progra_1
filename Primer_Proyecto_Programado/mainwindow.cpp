@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
     ui->sbxRango2->setMinimum(ui->sbxRango1->value()+1);
+    ui->rbtnAdelante->setChecked(true);
 }
 
 template <typename T>
@@ -76,7 +77,8 @@ void MainWindow::on_btnRandom_clicked()
     {
         if(ui->cbxDato->currentText() == "Enteros")
         {
-            list->~SimpleList();
+            delete intSimpList;
+            intSimpList = new SimpleList<int>();
             int cantidad = ui->sbxCantidad->value();
             int valor;
             int sup = ui->sbxRango2->value();
@@ -84,25 +86,29 @@ void MainWindow::on_btnRandom_clicked()
             for(int i = 0; i<cantidad;i++)
             {
                 valor = rand() % ((sup - inf) + 1) + inf;
-                list->insertAtHead(valor);
+                intSimpList->insertAtHead(valor);
             }
             scene->clear();;
-            GenerateBoxes(list);
+            GenerateBoxes(intSimpList);
+        }/*if de enteros*/
+        else if(ui->cbxDato->currentText() == "Letras")
+        {
+
         }
-    }
+    }/*if de lista simple*/
 }
 
 void MainWindow::on_btnQuick_clicked()
 {
-    list->print();
-    DobleBubble(list, list->getSize()-1);
+    intSimpList->print();
+    DobleBubble(*intSimpList, intSimpList->getSize()-1);
     //Swap(1,2);
-    list->print();
+    intSimpList->print();
 }
 
 void MainWindow::on_cbxDato_currentTextChanged(const QString &arg1)
 {
-    if(ui->cbxDato->currentText() == "Palabras")
+    if(ui->cbxDato->currentText() == "Enteros")
     {
         ui->sbxRango1->setEnabled(true);
         ui->sbxRango2->setEnabled(true);
@@ -134,7 +140,7 @@ void MainWindow::on_cbxDato_currentTextChanged(const QString &arg1)
 
 /* INSERTION SORT */
 template <class T>
-void MainWindow::InsertionSort(SimpleList<T>* arr) //Lista simple
+void MainWindow::InsertionSort(SimpleList<T> *arr) //sobrecarga para la lista doble
 {
     int i, j;
     T actual;
@@ -1350,7 +1356,7 @@ void MainWindow::BubbleSort(Queue<T> *arr)
 
 /* BUBBLEDOBLE */
 template<class T>
-void MainWindow::DobleBubble(SimpleList<T> *arr, int end) //lista simple
+void MainWindow::DobleBubble(SimpleList<T> &arr, int end)
 {
     bool permutation;
     int en_cours = 0, sens = 1;
@@ -1361,9 +1367,11 @@ void MainWindow::DobleBubble(SimpleList<T> *arr, int end) //lista simple
         while (((sens == 1) && (en_cours < end)) || ((sens == -1) && (en_cours > debut)))
         {
             en_cours += sens;
-            if (arr->getPos(en_cours)->getDato() < arr->getPos(en_cours-1)->getDato())
+            SimpleNode<T> a = *arr[en_cours];
+            SimpleNode<T> b = *arr[en_cours-1];
+            if (a < b)
             {
-                arr->swap(en_cours,en_cours-1);
+                arr.swap(en_cours,en_cours-1);
                 movements.push_back(movement(en_cours,en_cours - 1));
                 permutation = true;
             }

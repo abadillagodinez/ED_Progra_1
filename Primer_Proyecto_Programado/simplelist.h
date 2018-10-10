@@ -28,6 +28,7 @@ class SimpleList
         SimpleNode<tData>* getTail();
 
         SimpleNode<tData>* getPos(int pos);
+        SimpleNode<tData>* operator [](int pos);
         void swap(int pos1, int pos2);
 
     protected:
@@ -276,6 +277,37 @@ SimpleNode<tData>* SimpleList<tData>::getPos(int pos)
         }
     }
 }
+
+
+template <class tData>
+SimpleNode<tData>* SimpleList<tData>::operator [](int pos)
+{
+    if(isVoid())
+        cout << "La lista se está vacía\n";
+    else
+    {
+        if((pos >= lSize) || (pos < 0))
+            cout << "El índice esta fuera del los límites de la lista\n";
+        else
+        {
+            if(pos == 0)
+                return head;
+            else if(pos == lSize-1)
+                return tail;
+            else
+            {
+                int index = 1;
+                actual = head;
+                while (index <= pos) {
+                    actual = actual->getNext();
+                    index++;
+                }
+                return actual;
+            }
+        }
+    }
+}
+
 
 template<class tData>
 void SimpleList<tData>::swap(int pos1, int pos2)

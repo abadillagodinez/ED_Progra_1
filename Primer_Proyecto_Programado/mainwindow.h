@@ -222,7 +222,7 @@ public:
 
     /* BUBBLEDOBLE */
     template<class T>
-    void DobleBubble(SimpleList<T> *arr, int end);
+    void DobleBubble(SimpleList<T> &arr, int end);
 
     template<class T>
     void DobleBubble(DobleList<T> *arr, int end);
@@ -263,7 +263,31 @@ private:
     vector<QGraphicsLineItem*> lines;
     QGraphicsItemAnimation *animation;
 
-    SimpleList<int> *list = new SimpleList<int>();
+    /*ESTRUCTURAS*/
+    SimpleList<int> *intSimpList = new SimpleList<int>();
+    SimpleList<char> *charSimpList = new SimpleList<char>();
+    SimpleList<string> *strSimpList = new SimpleList<string>();
+    //SimpleList<obj> *objSimpList = new SimpleList<obj>();
+
+    DobleList<int> *intDobList = new DobleList<int>();
+    DobleList<char> *charDobList = new DobleList<char>();
+    DobleList<string> *strDoblList = new DobleList<string>();
+    //DobleList<obj> *objDobList= new DobleList<obj>();
+
+    DCList<int> *intDClist = new DCList<int>();
+    DCList<char> *charDCList = new DCList<char>();
+    DCList<string> *strDCList = new DCList<string>();
+    //DCList<obj> *objDCList = new DCList<obj>();
+
+    Stack<int> *intStack = new Stack<int>();
+    Stack<char> *charStack = new Stack<char>();
+    Stack<string> *strStack = new Stack<string>();
+    //Stack<obj> *objStack = new Stack<obj>();
+
+    Queue<int> *intQueue = new Queue<int>();
+    Queue<char> *charQueue = new Queue<char>();
+    Queue<string> *strQueue = new Queue<string>();
+    //Queue<obj> *objQueue = new Queue<obj>();
 
     vector<movement> movements;
 };

@@ -1,5 +1,7 @@
 #ifndef SimpleNode_H
 #define SimpleNode_H
+#include <string>
+#include <tuple>
 
 template <typename tData>
 class SimpleNode
@@ -15,6 +17,9 @@ class SimpleNode
         void setDato(tData pDato);
         SimpleNode* getNext();
         void setNext(SimpleNode* pNext);
+        bool operator< (SimpleNode<tData> newdato);
+        bool operator> (SimpleNode<tData> newdato);
+        bool operator == (SimpleNode<tData> newdato);
     protected:
 };
 
@@ -60,4 +65,31 @@ void SimpleNode<tData>::setNext(SimpleNode* pNext)
     next = pNext;
 }
 
+template <typename tData>
+bool SimpleNode<tData>::operator<(SimpleNode<tData> newdato)
+{
+    /* MODIFIBLE FUNCTION TO COMPARE OBJECTS USING TUPLES
+     * YOU SHOULD DO STD::TIE(DATAMEMBERS) THEN STD::TIE(NEWDATAMEMEBERS)
+     * AND FINALLY COMPARE THE TWO OBJECTS */
+    return std::tie(dato) < std::tie(newdato.dato);
+}
+
+template <typename tData>
+bool SimpleNode<tData>::operator>(SimpleNode<tData> newdato)
+{
+    /* MODIFIBLE FUNCTION TO COMPARE OBJECTS USING TUPLES
+     * YOU SHOULD DO STD::TIE(DATAMEMBERS) THEN STD::TIE(NEWDATAMEMEBERS)
+     * AND FINALLY COMPARE THE TWO OBJECTS */
+    return std::tie(dato) > std::tie(newdato.dato);
+}
+
+
+template <typename tData>
+bool SimpleNode<tData>::operator ==(SimpleNode<tData> newdato)
+{
+    /* MODIFIBLE FUNCTION TO COMPARE OBJECTS USING TUPLES
+     * YOU SHOULD DO STD::TIE(DATAMEMBERS) THEN STD::TIE(NEWDATAMEMEBERS)
+     * AND FINALLY COMPARE THE TWO OBJECTS */
+    return std::tie(dato) == std::tie(newdato.dato);
+}
 #endif

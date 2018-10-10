@@ -33,7 +33,7 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QGraphicsView *graphicsView;
-    QRadioButton *radioButton;
+    QRadioButton *rbtnPausar;
     QPushButton *btnRandom;
     QPushButton *btnQuick;
     QComboBox *cbxEstructura;
@@ -45,6 +45,8 @@ public:
     QSpinBox *sbxRango1;
     QLabel *lblRango;
     QSpinBox *sbxRango2;
+    QRadioButton *rbtnAdelante;
+    QRadioButton *rbtnAtras;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -59,15 +61,15 @@ public:
         graphicsView = new QGraphicsView(centralWidget);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
         graphicsView->setGeometry(QRect(60, 200, 931, 231));
-        radioButton = new QRadioButton(centralWidget);
-        radioButton->setObjectName(QStringLiteral("radioButton"));
-        radioButton->setGeometry(QRect(820, 120, 82, 17));
+        rbtnPausar = new QRadioButton(centralWidget);
+        rbtnPausar->setObjectName(QStringLiteral("rbtnPausar"));
+        rbtnPausar->setGeometry(QRect(710, 40, 82, 17));
         btnRandom = new QPushButton(centralWidget);
         btnRandom->setObjectName(QStringLiteral("btnRandom"));
         btnRandom->setGeometry(QRect(310, 10, 111, 23));
         btnQuick = new QPushButton(centralWidget);
         btnQuick->setObjectName(QStringLiteral("btnQuick"));
-        btnQuick->setGeometry(QRect(460, 70, 75, 23));
+        btnQuick->setGeometry(QRect(590, 10, 75, 23));
         cbxEstructura = new QComboBox(centralWidget);
         cbxEstructura->setObjectName(QStringLiteral("cbxEstructura"));
         cbxEstructura->setGeometry(QRect(110, 10, 151, 23));
@@ -104,6 +106,12 @@ public:
         sbxRango2->setGeometry(QRect(190, 90, 71, 24));
         sbxRango2->setMinimum(10);
         sbxRango2->setMaximum(100);
+        rbtnAdelante = new QRadioButton(centralWidget);
+        rbtnAdelante->setObjectName(QStringLiteral("rbtnAdelante"));
+        rbtnAdelante->setGeometry(QRect(710, 10, 100, 21));
+        rbtnAtras = new QRadioButton(centralWidget);
+        rbtnAtras->setObjectName(QStringLiteral("rbtnAtras"));
+        rbtnAtras->setGeometry(QRect(710, 70, 100, 21));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -127,7 +135,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-        radioButton->setText(QApplication::translate("MainWindow", "Pausar", 0));
+        rbtnPausar->setText(QApplication::translate("MainWindow", "Pausar", 0));
         btnRandom->setText(QApplication::translate("MainWindow", "Random", 0));
         btnQuick->setText(QApplication::translate("MainWindow", "QuickSort", 0));
         cbxEstructura->clear();
@@ -143,7 +151,6 @@ public:
         cbxDato->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "Enteros", 0)
          << QApplication::translate("MainWindow", "Letras", 0)
-         << QApplication::translate("MainWindow", "Strings", 0)
          << QApplication::translate("MainWindow", "Palabras", 0)
          << QApplication::translate("MainWindow", "Otros", 0)
         );
@@ -151,6 +158,8 @@ public:
         lblDato->setText(QApplication::translate("MainWindow", "Dato:", 0));
         lblCantidadDatos->setText(QApplication::translate("MainWindow", "Cantidad:", 0));
         lblRango->setText(QApplication::translate("MainWindow", "Rango:", 0));
+        rbtnAdelante->setText(QApplication::translate("MainWindow", "Adelante", 0));
+        rbtnAtras->setText(QApplication::translate("MainWindow", "Atr\303\241s", 0));
     } // retranslateUi
 
 };
